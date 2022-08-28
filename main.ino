@@ -67,7 +67,7 @@ void handleRoot() { //função que retorna as informações para o site
 	}
 
 	if (!recebido) {
-		//TODO(1): parar o programa?
+		ShowInvalid = true
 	}
 
 	// latitude longitude e idade da informação

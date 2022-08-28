@@ -18,6 +18,9 @@
 #include "SSD1306Wire.h"
 #include "Locust.h"
 
+//INVALID check
+bool ShowInvalid = false
+
 SSD1306Brzo display(0x3c, D3, D5);// Conexão da tela OLED
 SoftwareSerial saidaGps (3,1);//RX e TX GPS (conexão)
 ESP8266WebServer Locust (80); //Nome do Server
@@ -67,26 +70,27 @@ void handleRoot() { //função que retorna as informações para o site
 		//TODO(1): parar o programa?
 	}
 
-	//Serial.println ("---------------------")
 	// latitude longitude e idade da informação
 	long latitude, longitude;
 	unsigned long idadeInfo;
 	gps1.get_position(&latitude, &longitude, &idadeInfo);
 
-	/*
-	if (latitude != TinyGPS::GPS_INVALID_F_ANGLE) {
-		Serial.print("Latitude: ");
-		Serial.println (float(latitude)/ 100000, 6);
+	if ShowInvalid {
+		Serial.println ("---------------------")
+		if (latitude != TinyGPS::GPS_INVALID_F_ANGLE) {
+			Serial.print("Latitude: ");
+			Serial.println (float(latitude)/ 100000, 6);
+		}
+		if (longitude != TinyGPS::GPS_INVALID_F_ANGLE) {
+			Serial.print("Longitude: ");
+			Serial.println (float (longitude) / 100000, 6);
+		}
+		if (idadeInfo!= TinyGPS::GPS_INVALID_AGE) {
+			Serial.print("idade da informacao(ms): ");
+			Serial.prinln(idadeInfo);
+		}
+		Serial.println ("---------------------")
 	}
-	if (longitude != TinyGPS::GPS_INVALID_F_ANGLE) {
-		Serial.print("Longitude: ");
-		Serial.println (float (longitude) / 100000, 6);
-	}
-	if (idadeInfo!= TinyGPS::GPS_INVALID_AGE) {
-		Serial.print("idade da informacao(ms): ");
-		Serial.prinln(idadeInfo);
-	}
-	*/
 
 	//mais informações como dia e hora
 	//TODO(1): UTF-3: corrigir o fuso
@@ -98,12 +102,12 @@ void handleRoot() { //função que retorna as informações para o site
 	float altitudeGPS;
 	altitudeGPS = gps1.f_altitude();
 
-	/*
-	if ((altitudeGPS != TinyGPS::GPS_INVALID_ALTITUDE) {
-		Serial.print(Altitude (cm): ");
-		*Serial.println(altitudeGPS);
+	if ShowInvalid {
+		if (altitudeGPS != TinyGPS::GPS_INVALID_ALTITUDE) {
+			Serial.print("Altitude (cm): ");
+			Serial.println(altitudeGPS);
+		}
 	}
-	*/
 
 	//Velocidade
 	float velocidade;
@@ -119,20 +123,20 @@ void handleRoot() { //função que retorna as informações para o site
 	satelites = gps1.satellites();
 	precisao = gps1.hdop();
 
-	/*
-	if (satelites !=TinyGPS::GPS_INVALID_SATELLITES) {
-	Serial.print(Satelites: ");
-	Serial.println(satelites);
+	if ShowInvalid {
+		if (satelites !=TinyGPS::GPS_INVALID_SATELLITES) {
+			Serial.print("Satelites: ");
+			Serial.println(satelites);
+		}
+		if (precisao != TinyGPS::GPS_INVALID_HDOP) {
+			Serial.print("Precisao (centesimos de segundo): ");
+			Serial.println(precisao);
+		}
 	}
-	if (precisao != TinyGPS::GPS_INVALID_HDOP) {
-		Serial.print("Precisao (centesimos de segundo): ");
-		Serial.println(precisao);
-	}
-	*/
 
-	String HTML;
+	String HTML = "";
 
-HTML = "<!DOCTYPE html>";
+HTML += "<!DOCTYPE html>";
 HTML += "<head>";
 //HTML += satelites; (as variaveis locais do GPS são escritas assim)IMPORTANTE!
 HTML +=		 "<title>Document</title>";
@@ -168,7 +172,7 @@ void handleNotFound() {
 	msg += "URI: ";
 	msg += Locust.uri();
 	msg += "\nMethod: ";
-	msg += (Locust.method() == HTTP_GET)?"GET":"POST";
+	msg += (Locust.method() == HTTP_GET) ? "GET":"POST";
 	msg += "\nArguments: ";
 	msg += Locust.args();
 	msg += "\n";
@@ -176,7 +180,6 @@ void handleNotFound() {
 		msg += " " + Locust.argName(i) + ": " = Locust.arg(i) + "\n";
 	}
 	Locust.send(404, "text/plain", msg);
-
 }
 
 void setup(void) {
@@ -198,7 +201,6 @@ void setup(void) {
 
 	if (!bAp) {
 			display.drawString(0,0,"A conexão falhou");
-			delay(1000);
 	} else {
 			display.drawString(0,0,"Conectado");
 	}
@@ -208,6 +210,7 @@ void setup(void) {
 		delay(500);
 		display.drawString(0,0,".");
 	}
+
 	int IP = (WiFi.localIP());
 	display.drawString(0,0,"Conectado ao	");
 	delay(1000);
@@ -223,7 +226,7 @@ void setup(void) {
 
 	Locust.on("/", handleRoot);
 
-	Locust.on("/inline", []() {
+	Locust.on("/inline", [](){
 		Locust.send(200, "text/plain", "this works as well");
 	});
 

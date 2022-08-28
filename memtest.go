@@ -97,7 +97,7 @@ func main(){
 
 		}
 	}
-	if argc >=2 && argv[1] == "--charmap" {
+	if argc >=1 && argv[0] == "--charmap" {
 		fmt.Printf("memlen: %d\ndiferente chars: %d\ncharmap: %v",
 			len(x), len(chars), charmap,
 		)

@@ -1,7 +1,7 @@
 //Bibliotecas utilizadas no projeto profissional.
 //Parte inical no qual crio um pequeno servidor "Beta" para o Locust.
 //IMPORTANTE: o código está pronto, a compilação funciona, mas não testei no hardware ainda
-//TODO: testar no hardware
+//TODO(1): testar no hardware
 //então ele ainda pode ser modificado, falta a parte de HTML,CSS e JS a partir da linha 106
 
 #include <SoftwareSerial.h>
@@ -13,7 +13,7 @@
 #include <TinyGPS.h>
 #include <Wire.h>
 
-//TODO upload esses arquivos p/ o repo
+//TODO(1): upload esses arquivos p/ o repo
 #include "SSD1306Brzo.h"
 #include "SSD1306Wire.h"
 #include "Locust.h"
@@ -29,7 +29,7 @@ typedef void (*Demo)(void);
 const DisplayDemoModes = 1;
 int demoMode = 0;
 
-//TODO explicar qq essa variável faz
+//TODO(1): explicar qq essa variável faz
 //int counter = 1;
 
 // lista de funções de display
@@ -64,7 +64,7 @@ void handleRoot() { //função que retorna as informações para o site
 	}
 
 	if (!recebido) {
-		//TODO parar o programa?
+		//TODO(1): parar o programa?
 	}
 
 	//Serial.println ("---------------------")
@@ -89,7 +89,7 @@ void handleRoot() { //função que retorna as informações para o site
 	*/
 
 	//mais informações como dia e hora
-	//TODO UTF-3: corrigir o fuso
+	//TODO(1): UTF-3: corrigir o fuso
 	int ano;
 	byte mes, dia, hora, minuto, segundo,centesimo;
 	gps1.crack_datetime(&ano, &mes, &dia, &hora, &minuto, &segundo, &centesimo, & idadeInfo);

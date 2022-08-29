@@ -14,6 +14,8 @@
 #include <Wire.h>
 
 //TODO(1): upload esses arquivos p/ o repo
+// botar as dependencies no github
+// https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/about-the-dependency-graph#supported-package-ecosystems
 #include "SSD1306Brzo.h"
 #include "SSD1306Wire.h"
 #include "Locust.h"

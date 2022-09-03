@@ -1,0 +1,9 @@
+link para commits: +código no final
+https://github.com/OwseiWasTaken/nosso-grupo/commit/
+
+31/8: 5c67b4f
+merge dev->master
+[+5] .gitignore binários
+[+2] main.ino TODOs sobre dependências
+
+

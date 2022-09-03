@@ -1,0 +1,25 @@
+Site:
+
+Arduino:
+
+
+
+GitHub:
+
+
+
+Git Cli
+# você pode baixar o Git Cli em um WSL (apt) ou como um programa inteiro (https://git-scm.com/download/win)
+git add /arquivo ou pasta/ = adicionar /arquivo/ para o próximo commit
+git commit -m /nome/ = fazer um commit com o título /nome/
+git push = mandar o(s) commit para o repo
+git pull = atualizar o repo local
+git status = checar qq está acontecendo
+git branch /nome/ = criar uma branch com o nome /nome/
+git branch = olhar as branches q existem
+git checkout /nome/ = mudar de branch para a /nome/
+git /comando/ --help = abrir a página de ajuda do /comando/
+git commit /arquivos/ ... = fazer um commit com arquivos específicos, e não arquivos "adicionados"
+(os arquivos não podem ser adicionados a um repo com esse comando)
+git add -i = modo interativo do Git Cli (eu n sei como usar bruh)
+

@@ -7,9 +7,10 @@ func main(){
 	var FILE []string
 	var OUTFILE string
 	var line string
-	// TODO(3): get a proper name
-	var FilenameOut = "out.c"
+	var FilenameOut = "./sitelib.c"
+	var FilenameTemplate = "./template.c"
 	var FilenameIn = "../site.html"
+	var temp []string
 
 	FILE = strings.Split(ReadFile(FilenameIn), "\n")
 
@@ -27,11 +28,24 @@ func main(){
 		line = strings.Replace(line, "\n", "", -1)
 		line = strings.Replace(line, "\"", "\\\"", -1)
 		line = "\""+line+"\""
-		line = "HTML+="+line+"\n"
+		line = "HTML+="+line+";\n"
 		OUTFILE += line
 	}
 
-	WriteFile(FilenameOut, OUTFILE+"\n")
+	FILE = strings.Split(ReadFile(FilenameTemplate), "\n")
+
+	for i:=0;i<len(FILE);i++ {
+		if FILE[i] == "////HTMLMAKE" {
+			temp = FILE[i+1:]
+			FILE = FILE[:i+1]
+			FILE[i] = "\n"+OUTFILE
+			FILE = append(FILE, temp...)
+		}
+	}
+
+	OUTFILE = strings.Join(FILE, "\n")
+
+	WriteFile(FilenameOut, OUTFILE)
 
 	exit(0)
 }

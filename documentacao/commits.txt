@@ -1,0 +1,13 @@
+link para commits: +código no final
+https://github.com/OwseiWasTaken/nosso-grupo/commit/dev
+
+5/9
+[+96-4] 6fa6946 (
+	extra/SiteToLib.go template.c + site.hml funcionando!
+	extra/sitelib.c site atual
+	extra/template.c template atual
+)
+e1034a8 binários SiteToLib
+[-5] 1575e62 .gitignore removi todas as marks
+82fdbaa binários memtest
+[+11-5] documentação

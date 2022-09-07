@@ -1,10 +1,9 @@
-//pre
-//TODO(1) libcon: adicionar coisas a template.c
+//start
 
 String HTML = "";
+
+//pre
 ////HTMLMAKE
 //post
 
-hi
-hello
-
+//end

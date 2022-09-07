@@ -1,7 +1,8 @@
-//pre
-//TODO(1) libcon: adicionar coisas ao libcon.c
+//start
 
 String HTML = "";
+
+//pre
 
 HTML+="<!DOCTYPE html>";
 HTML+="<html lang=\"pt-br\">";
@@ -63,6 +64,4 @@ HTML+="</html>";
 
 //post
 
-hi
-hello
-
+//end

@@ -4,13 +4,16 @@ include "gutil"
 
 func main(){
 	InitGu()
-	var FILE []string
-	var OUTFILE string
-	var line string
-	var FilenameOut = "./sitelib.c"
-	var FilenameTemplate = "./template.c"
-	var FilenameIn = "../site.html"
-	var temp []string
+	var (
+		FILE []string
+		OUTFILE string
+		line string
+	//TODO(3) onde sitelib.c: sitelib.c na extra/media/.?
+		FilenameOut = "./extra/sitelib.c"
+		FilenameTemplate = "./extra/template.c"
+		FilenameIn = "./site.html"
+		temp []string
+	)
 
 	FILE = strings.Split(ReadFile(FilenameIn), "\n")
 

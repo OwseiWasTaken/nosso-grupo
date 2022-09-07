@@ -9,7 +9,7 @@ func main(){
 		OUTFILE string
 		line string
 	//TODO(3) onde sitelib.c: sitelib.c na extra/media/.?
-		FilenameOut = "./extra/sitelib.c"
+		FilenameOut = "./extra/sitelib.h"
 		FilenameTemplate = "./extra/template.c"
 		FilenameIn = "./site.html"
 		temp []string
@@ -31,7 +31,7 @@ func main(){
 		line = strings.Replace(line, "\n", "", -1)
 		line = strings.Replace(line, "\"", "\\\"", -1)
 		line = "\""+line+"\""
-		line = "HTML+="+line+";\n"
+		line = "\tHTML+="+line+";\n"
 		OUTFILE += line
 	}
 

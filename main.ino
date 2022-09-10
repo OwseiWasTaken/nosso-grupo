@@ -22,7 +22,8 @@
 #include "sitelib.h"
 //INVALID check
 
-const int tempoDelay = 0;
+const int tempoDelay = 5000;
+const int infoDelay = 2000;
 bool ShowInvalid = false;
 
 SSD1306Brzo display(0x3c, D3, D5);// Conexão da tela OLED
@@ -58,7 +59,7 @@ void handleRoot() { //função que retorna as informações para o site
   }
 
   if (!recebido) {
-   ShowInvalid = true;
+   ShowInvalid = false;
   }
 
   // latitude longitude e idade da informação
@@ -67,20 +68,26 @@ void handleRoot() { //função que retorna as informações para o site
   gps1.get_position(&latitude, &longitude, &idadeInfo);
 
   if (ShowInvalid) {
-    Serial.println ("---------------------");
+    display.println ("---------------------");
     if (latitude != TinyGPS::GPS_INVALID_F_ANGLE) {
-      Serial.print("Latitude: ");
-      Serial.println (float(latitude)/ 100000, 6);
+      display.print("Latitude: ");
+      delay(infoDelay);
+      display.println (float(latitude)/ 100000, 6);
+      delay(tempoDelay);
     }
     if (longitude != TinyGPS::GPS_INVALID_F_ANGLE) {
-      Serial.print("Longitude: ");
-      Serial.println (float (longitude) / 100000, 6);
+      display.print("Longitude: ");
+      delay(infoDelay);
+      display.println (float (longitude) / 100000, 6);
+      delay(tempoDelay);
     }
     if (idadeInfo!= TinyGPS::GPS_INVALID_AGE) {
-      Serial.print("idade da informacao(ms): ");
-      Serial.println(idadeInfo);
+      display.print("idade da informacao(ms): ");
+      delay(infoDelay);
+      display.println(idadeInfo);
+      delay(tempoDelay);
     }
-    Serial.println ("---------------------");
+    display.println ("---------------------");
   }
 
   //mais informações como dia e hora
@@ -95,8 +102,8 @@ void handleRoot() { //função que retorna as informações para o site
 
   if (ShowInvalid) {
     if (altitudeGPS != TinyGPS::GPS_INVALID_ALTITUDE) {
-      Serial.print("Altitude (cm): ");
-      Serial.println(altitudeGPS);
+      display.print("Altitude (cm): ");
+      display.println(altitudeGPS);
     }
   }
 

@@ -22,6 +22,7 @@
 //INVALID check
 
 const int tempoDelay = 5000;
+
 const int minDelay = 3000;
 const int ledBlink = 5;
 
@@ -64,7 +65,6 @@ void handleRoot() { //função que retorna as informações para o site
     recebido = gps1.encode(cIn);
   }
 
-  
 
   // latitude longitude e idade da informação
   long latitude, longitude;
@@ -77,6 +77,7 @@ void handleRoot() { //função que retorna as informações para o site
      delay(1000);
      digitalWrite(ledBlink, LOW);
      delay(1000);
+
   }
 
   if (recebido) {
@@ -119,6 +120,7 @@ void handleRoot() { //função que retorna as informações para o site
   float altitudeGPS;
   altitudeGPS = gps1.f_altitude();
 
+
   if (altitudeGPS != TinyGPS::GPS_INVALID_ALTITUDE) {
      display.drawString(0,0,"Altitude (cm): ");
      dString();
@@ -126,6 +128,7 @@ void handleRoot() { //função que retorna as informações para o site
      display.drawLogBuffer (2,4);
      dPrintln();
    }
+
 
   //Velocidade
   float velocidade;

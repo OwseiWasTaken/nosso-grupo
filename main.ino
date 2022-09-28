@@ -17,78 +17,98 @@
 // botar as dependencies no github
 // https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/about-the-dependency-graph#supported-package-ecosystems
 #include "SSD1306Brzo.h"
-#include "SSD1306Wire.h"
 #include "Locust.h"
 #include "sitelib.h"
 //INVALID check
 
 const int tempoDelay = 5000;
-const int infoDelay = 2000;
-bool ShowInvalid = false;
+
+const int minDelay = 3000;
+const int ledBlink = 5;
+
+#define posX 21
+#define posY 0
+
 
 SSD1306Brzo display(0x3c, D3, D5);// Conexão da tela OLED
 SoftwareSerial saidaGps (3,1);//RX e TX GPS (conexão)
 ESP8266WebServer Locust (80); //Nome do Server
 TinyGPS gps1;// nome do GPS
 
-#define DEMO_DURATION 3000 // Variável para a função da logo
-typedef void (*Demo)(void);
+void imagem (){
+   display.drawXbm(posX, posY,Locust_Logo_width,Locust_logo_height,Locust_Logo_bits);
+   display.display();
+}  
 
-int demoMode = 0;
-int counter = 1;
-
-void drawImageDemo(){
-  //Imagem do Locust
-  display.drawXbm(34, 14,Locust_Logo_width,Locust_logo_height,Locust_Logo_bits);
+void dPrintln(){
+  display.display();
+  delay (tempoDelay);
+  display.clear();
 }
 
-Demo demos[] = {drawImageDemo};// se quiserem aqui da para colocar mais funções de display :)
-int demoLength = (sizeof(demos) / sizeof(Demo));
-long timeSinceLastModeSwitch = 0;
+void dString(){
+   display.display();
+   delay (minDelay);
+   display.clear();
+}
 
 //CODE
 void handleRoot() { //função que retorna as informações para o site
 
   //(Abaixo está o código do gps)
-
-  bool recebido = true;
+  display.setLogBuffer(10, 40);
+  
+  bool recebido = false;
 
   while (saidaGps.available()) {
     char cIn = saidaGps.read();
     recebido = gps1.encode(cIn);
   }
 
-  if (!recebido) {
-   ShowInvalid = false;
-  }
 
   // latitude longitude e idade da informação
   long latitude, longitude;
   unsigned long idadeInfo;
   gps1.get_position(&latitude, &longitude, &idadeInfo);
 
-  if (ShowInvalid) {
-    display.println ("---------------------");
-    if (latitude != TinyGPS::GPS_INVALID_F_ANGLE) {
-      display.print("Latitude: ");
-      delay(infoDelay);
-      display.println (float(latitude)/ 100000, 6);
-      delay(tempoDelay);
-    }
-    if (longitude != TinyGPS::GPS_INVALID_F_ANGLE) {
-      display.print("Longitude: ");
-      delay(infoDelay);
-      display.println (float (longitude) / 100000, 6);
-      delay(tempoDelay);
-    }
-    if (idadeInfo!= TinyGPS::GPS_INVALID_AGE) {
-      display.print("idade da informacao(ms): ");
-      delay(infoDelay);
-      display.println(idadeInfo);
-      delay(tempoDelay);
-    }
-    display.println ("---------------------");
+  if (!recebido){
+     pinMode(ledBlink, OUTPUT);
+     digitalWrite(ledBlink, HIGH);
+     delay(1000);
+     digitalWrite(ledBlink, LOW);
+     delay(1000);
+
   }
+
+  if (recebido) {
+      display.drawString (0,0,"---------------------");
+      dString();
+  if (latitude != TinyGPS::GPS_INVALID_F_ANGLE) {
+      display.drawString (0,0,"Latitude: ");
+      dString();
+      display.println (float(latitude)/ 100000, 6);
+      display.drawLogBuffer(2,1);
+      dPrintln();
+   }
+  if (longitude != TinyGPS::GPS_INVALID_F_ANGLE) {
+      display.drawString(0,0,"Longitude: ");
+      dString();
+      display.println (float (longitude) / 100000, 6);
+      display.drawLogBuffer (2,2);
+      dPrintln();
+      
+   }
+  if (idadeInfo!= TinyGPS::GPS_INVALID_AGE) {
+     display.drawString(0,0,"idade da informacao(ms): ");
+     dString();
+     display.println(idadeInfo);
+     display.drawLogBuffer (2,3);
+     dPrintln();
+   }
+    display.drawString (0,0,"---------------------");
+    dString();
+    
+  
 
   //mais informações como dia e hora
   //TODO(1): UTF-3: corrigir o fuso
@@ -100,12 +120,15 @@ void handleRoot() { //função que retorna as informações para o site
   float altitudeGPS;
   altitudeGPS = gps1.f_altitude();
 
-  if (ShowInvalid) {
-    if (altitudeGPS != TinyGPS::GPS_INVALID_ALTITUDE) {
-      display.print("Altitude (cm): ");
-      display.println(altitudeGPS);
-    }
-  }
+
+  if (altitudeGPS != TinyGPS::GPS_INVALID_ALTITUDE) {
+     display.drawString(0,0,"Altitude (cm): ");
+     dString();
+     display.println(altitudeGPS);
+     display.drawLogBuffer (2,4);
+     dPrintln();
+   }
+
 
   //Velocidade
   float velocidade;
@@ -121,19 +144,25 @@ void handleRoot() { //função que retorna as informações para o site
   satelites = gps1.satellites();
   precisao = gps1.hdop();
 
-  if (ShowInvalid) {
     if (satelites !=TinyGPS::GPS_INVALID_SATELLITES) {
-      Serial.print("Satelites: ");
-      Serial.println(satelites);
+      display.drawString(0,0,"Satelites: ");
+      dString();
+      display.println(satelites);
+      display.drawLogBuffer (2,5);
+      dPrintln();
     }
     if (precisao != TinyGPS::GPS_INVALID_HDOP) {
-      Serial.print("Precisao (centesimos de segundo): ");
-      Serial.println(precisao);
+      display.drawString(0,0,"Precisao (centesimos de segundo): ");
+      dString();
+      display.println(precisao);
+      display.drawLogBuffer (2,6);
+      dPrintln();
     }
-  }
 
-  Locust.send(200,"text/html", site());
-  }
+     Locust.send(200,"text/html", site());
+   }
+ }
+
 
 void handleNotFound() {
   String msg = "Arquivo não encontrado\n\n";
@@ -153,43 +182,62 @@ void handleNotFound() {
 void setup(void) {
   //Segunda parte do programa, um gerenciador de redes.
   saidaGps.begin(9600);//velocidade de comunicação do GPS
-
-  display.init();// inicializa o display (tela)
-  display.flipScreenVertically();
-  display.setFont(ArialMT_Plain_10);
-
-  drawImageDemo();// chama a função da imagem do Locust
-  delay(tempoDelay); // a imagem rodará por 5 segundos, 1000 = 1 segundo
-  WiFi.mode(WIFI_STA); //permite que o ESP8266 se conecte a uma rede Wi-Fi
+  
   Serial.begin(115200);
+  Serial.println();
+  Serial.println();
+
+
+  // Initialising the UI will init the display too.
+  display.init();
+
+  display.flipScreenVertically();
+  display.setFont(ArialMT_Plain_16);
+
+
+  imagem();
+  delay(tempoDelay);
+  display.clear();
+  
+  //delay(tempoDelay); // a imagem rodará por 5 segundos, 1000 = 1 segundo
+  WiFi.mode(WIFI_STA); //permite que o ESP8266 se conecte a uma rede Wi-Fi
   WiFiManager fGen; 
   fGen.resetSettings();
   bool bAp;
   bAp = fGen.autoConnect("LOCUST"); // Mostra o nome da rede (tipo um "Conecta Senac")
 
   if (!bAp) {
-      display.drawString(0,0,"A conexão falhou");
+      display.drawString(0,0,"A conexao falhou");
+      dString();
   } else {
       display.drawString(0,0,"Conectado");
+      dString();
   }
   delay(tempoDelay);
 
   while (WiFi.status() != WL_CONNECTED) {
     delay(tempoDelay);
-    display.drawString(0,0,".");
+    display.drawString(0,0,"...");
+    display.display();
+    delay (10);
+    display.clear();
   }
 
-  int IP = (WiFi.localIP()); // depois testar se essa variável não vai interferir no resultado :V
+ // int IP = (WiFi.localIP()); // depois testar se essa variável não vai interferir no resultado :V
   display.drawString(0,0,"Conectado ao  ");
-  delay(tempoDelay);
+  dString();
   display.drawString(0,0,"Endereço IP: ");
-  delay(tempoDelay);
+  dString();
   //display.println(IP);
-  Serial.println(IP);
+  display.setLogBuffer(5, 30);
+  display.println(WiFi.localIP());
+  display.drawLogBuffer(0,0);
+  display.display();
   delay(tempoDelay);
+  display.clear();
   if (MDNS.begin("esp8266")) {
-    display.drawString(0,0,"MDNS responder iniciado");
-    delay (tempoDelay);
+    display.drawString(0,0,"MDNS iniciado");
+    dString();
   }
   int setupLongitude = 0;
 
@@ -202,10 +250,13 @@ void setup(void) {
   Locust.onNotFound(handleNotFound);
 
   Locust.begin();
-  display.drawString(0,0,"Server HTTP iniciado");
+  display.drawString(0,0,"Server iniciado");
+  dString();
+  display.println(WiFi.localIP());//mudar depois
+  display.drawLogBuffer (1,0);
+  display.display();
   delay(tempoDelay);
-  Serial.println(IP);//mudar depois
-  delay(tempoDelay);
+  display.clear();
 }
 
 void loop() {

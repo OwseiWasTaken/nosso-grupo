@@ -1,0 +1,12 @@
+intro
+"A"->pog
+"B"->dog
+
+pog
+"C"->fim
+
+dog
+break
+
+fim
+break

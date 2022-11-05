@@ -1,5 +1,36 @@
 #! /usr/local/bin/python3.11
-from util import *
+import lib
+from lib.util import *
+from lib.keys import KeyDict as keys
+import subprocess
+
+if OS == "linux":
+	def GetCh():
+		return subprocess.run(
+			("./lib/gtk", "--once", "--python"), capture_output=True
+		).stdout[8:-3]
+else:
+	def GetCh():
+		return subprocess.run(
+			("./lib/gtk.exe", "--once", "--python"), capture_output=True
+		).stdout[8:-3]
+
+def GetKey():
+	x = GetCh()
+	#print(len(x))
+	for k in keys.keys():
+		#print(len(k))
+		if len(k) != len(x):continue
+		for i in r(k):
+			if ord(k[i]) != x[i]:break
+			#print(f"{ord(k[i])} == {x[i]}: {ord(k[i]) == x[i]}")
+		else:
+			#print(f"you pressed {keys[k]}")
+			return keys[k]
+	else:
+		return "NULL"
+print(GetKey())
+exit(0)
 
 @dataclass
 class Video:
@@ -50,7 +81,6 @@ def main() -> str:
 	for vid in vids:
 		print(repr(vid))
 	return ""
-
 
 #while True:
 if True:

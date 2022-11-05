@@ -13,7 +13,7 @@ body {
     padding-left: 40px;
     padding-right: 40px;
     margin: 20px;
-    height: 130px;
+    height: 100px;
     background-color: #472C20;
     display: flex;
     justify-content: space-between;
@@ -23,11 +23,14 @@ body {
 }
 p{
     font-size: 25px;
-    color:#F1E9E1;
+    color: white;
+    text-shadow: rgba(255, 255, 255, 0.016) 0.5px 0.5px 3px;
+    font-weight: bold;
 }
 a{
     font-size: 25px;
-    color:#F1E9E1;
+    color: white;
+    text-decoration: none;
 }
 h1{
     font-size: 50px;
@@ -51,46 +54,49 @@ img{
 
 .menu {
     list-style: none;
- 
     float: left;
 }
 
-.menu li {
+.menu > li {
     position: relative;
     float: left;
-
 }
 
-.menu li a {
+.menu > li a {
     color: #F1E9E1;
     text-decoration: none;
-    padding: 5px 10px;
+    text-align: center;
+    padding: 5px;
     display: block;
 }
 
-.menu li a:hover {
-    background: #fff;
-    color: black;
-    -moz-box-shadow: 0 3px 10px 0 #CCC;
-    -webkit-box-shadow: 0 3px 10px 0 #ccc;
-    text-shadow: 0px 0px 5px #fff;
+.menu > li > a:hover {
+    background-color: #391f1657;
+    color: white;
+    border-radius: 15px;
 }
 
-.menu li ul {
+.menu > li > ul {
     position: absolute;
-    top: 25px;
-    left: 0;
-    background-color: rgb(153, 18, 18);
+    top: 30px;
+    width: 150px;
+    background-color: rgb(50, 32, 19);
     display: none;
 }
 
-.menu li:hover ul,
-.menu li.over ul {
+.menu > li:hover > ul,
+.menu > li.over > ul {
     display: block;
+    background-color: rgb(23, 23, 23);
+}
+.menu > li> ul > li:hover {
+    background-color: rgb(41, 39, 38);
 }
 
-.menu li ul li {
-    border: 1px solid #c0c0c0;
+.menu > li > ul > li {
+    border: 1px solid black;
     display: block;
-    width: 150px;
+}
+.menu > li > ul a {
+    font-size: 16px;
 }

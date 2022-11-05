@@ -76,24 +76,36 @@ def LinkVids(vids: list[Video]) -> list[Video]:
 	for vid in vids:
 		# set value (name) of choice[k] as obj (based on name->obj)
 		vid.choices = {k:d[v] for k, v in vid.choices.items()}
-	return vids, d["intro"]
+	return vids, d, d["intro"]
+
+def Show(ops):
+	stdout.write("\x1B[1;1H")
+	stdout.write("Você vai:\n")
+	for i in r(ops):
+		stdout.write("( )"+ops[i]+'\n')
+
+def CMD(y, playname):
+	stdout.write(pos(y)+f"[CMD]: vlc {playname}")
+
 
 def main() -> str:
-	vids, atual = LinkVids(MakeVids())
+	vids, dic, atual = LinkVids(MakeVids())
+	stdout.flush()
 	y = 0
-	my, mx = GetTerminalSize()
+	mx, my = GetTerminalSize()
 	ops = list(atual.choices.keys())
+	#TESTZONE
+	#TESTZONE
+
 	clear()
-	while True:
-		stdout.write("\x1B[1;1H")
-		stdout.write(f"vlc {atual.playname}\n")
-
-		for i in r(ops):
-			stdout.write("( )"+ops[i]+'\n')
-
+	Show(ops)
+	stdout.write(pos(my-1)+f"selected {atual}")
+	CMD(my-2, atual.playname)
+	while len(ops):
+		# mover cursor
 		stdout.write("\x1B[%i;2H" % (y+2))
-		stdout.flush()
 
+		stdout.flush()
 		k = GetKey()
 		if k == "up":
 			if y != 0:
@@ -102,7 +114,14 @@ def main() -> str:
 			if y != len(ops)-1:
 				y+=1
 		elif k in ("space", "enter"):
-			stdout.write(pos(my-2)+"selected {ops[y]}")
+			clear()
+			stdout.write(pos(my-1)+f"selected {atual.choices[ops[y]]}")
+			# reset
+			atual = atual.choices[ops[y]]
+			CMD(my-2, atual.playname)
+			ops = list(atual.choices.keys())
+			y = 0
+			Show(ops)
 		else:
 			stdout.write(pos(my-2)+"NULL key")
 	return ""

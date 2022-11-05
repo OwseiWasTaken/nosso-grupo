@@ -81,17 +81,19 @@ def LinkVids(vids: list[Video]) -> list[Video]:
 def main() -> str:
 	vids, atual = LinkVids(MakeVids())
 	y = 0
-	ops = []
+	my, mx = GetTerminalSize()
+	ops = list(atual.choices.keys())
 	clear()
 	while True:
 		stdout.write("\x1B[1;1H")
 		stdout.write(f"vlc {atual.playname}\n")
-		ops =  list(atual.choices.keys())
+
 		for i in r(ops):
 			stdout.write("( )"+ops[i]+'\n')
-		#print(pos(y, 2))
+
 		stdout.write("\x1B[%i;2H" % (y+2))
 		stdout.flush()
+
 		k = GetKey()
 		if k == "up":
 			if y != 0:
@@ -99,6 +101,10 @@ def main() -> str:
 		elif k == "down":
 			if y != len(ops)-1:
 				y+=1
+		elif k in ("space", "enter"):
+			stdout.write(pos(my-2)+"selected {ops[y]}")
+		else:
+			stdout.write(pos(my-2)+"NULL key")
 	return ""
 
 #while True:

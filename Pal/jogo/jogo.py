@@ -29,8 +29,6 @@ def GetKey():
 			return keys[k]
 	else:
 		return "NULL"
-print(GetKey())
-exit(0)
 
 @dataclass
 class Video:
@@ -78,6 +76,9 @@ def LinkVids(vids: list[Video]) -> list[Video]:
 
 def main() -> str:
 	vids = LinkVids(MakeVids())
+	while True:
+		print(x:=GetKey())
+		if x == "space":break
 	for vid in vids:
 		print(repr(vid))
 	return ""

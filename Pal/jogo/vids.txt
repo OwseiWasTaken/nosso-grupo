@@ -1,12 +1,10 @@
 intro
-"A"->pog
-"B"->dog
+A->pog
+B->dog
 
 pog
-"C"->fim
+C->fim
 
 dog
-break
 
 fim
-break

@@ -5,11 +5,15 @@ from lib.keys import KeyDict as keys
 import subprocess
 
 if OS == "linux":
+	def clear():
+		ss("clear")
 	def GetCh():
 		return subprocess.run(
 			("./lib/gtk", "--once", "--python"), capture_output=True
 		).stdout[8:-3]
 else:
+	def clear():
+		ss("cls")
 	def GetCh():
 		return subprocess.run(
 			("./lib/gtk.exe", "--once", "--python"), capture_output=True
@@ -29,8 +33,6 @@ def GetKey():
 			return keys[k]
 	else:
 		return "NULL"
-print(GetKey())
-exit(0)
 
 @dataclass
 class Video:
@@ -74,12 +76,54 @@ def LinkVids(vids: list[Video]) -> list[Video]:
 	for vid in vids:
 		# set value (name) of choice[k] as obj (based on name->obj)
 		vid.choices = {k:d[v] for k, v in vid.choices.items()}
-	return vids
+	return vids, d, d["intro"]
+
+def Show(ops):
+	stdout.write("\x1B[1;1H")
+	stdout.write("Você vai:\n")
+	for i in r(ops):
+		stdout.write("( )"+ops[i]+'\n')
+
+def CMD(y, playname):
+	stdout.write(pos(y)+f"[CMD]: vlc {playname}")
+
 
 def main() -> str:
-	vids = LinkVids(MakeVids())
-	for vid in vids:
-		print(repr(vid))
+	vids, dic, atual = LinkVids(MakeVids())
+	stdout.flush()
+	y = 0
+	mx, my = GetTerminalSize()
+	ops = list(atual.choices.keys())
+	#TESTZONE
+	#TESTZONE
+
+	clear()
+	Show(ops)
+	stdout.write(pos(my-1)+f"selected {atual}")
+	CMD(my-2, atual.playname)
+	while len(ops):
+		# mover cursor
+		stdout.write("\x1B[%i;2H" % (y+2))
+
+		stdout.flush()
+		k = GetKey()
+		if k == "up":
+			if y != 0:
+				y -=1
+		elif k == "down":
+			if y != len(ops)-1:
+				y+=1
+		elif k in ("space", "enter"):
+			clear()
+			stdout.write(pos(my-1)+f"selected {atual.choices[ops[y]]}")
+			# reset
+			atual = atual.choices[ops[y]]
+			CMD(my-2, atual.playname)
+			ops = list(atual.choices.keys())
+			y = 0
+			Show(ops)
+		else:
+			stdout.write(pos(my-2)+"NULL key")
 	return ""
 
 #while True:

@@ -84,7 +84,10 @@ def Show(ops):
 mx, my = GetTerminalSize()
 
 def CMD(playname):
-	stdout.write(pos(my-2)+f"[CMD]: vlc {playname}")
+	if get("--jogo").exists:
+		ss("vlc {playname}")
+	else:
+		stdout.write(pos(my-2)+f"[CMD]: vlc {playname}")
 
 def statusline(atual):
 	stdout.write(pos(my-1)+f"selected {atual}")

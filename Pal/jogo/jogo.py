@@ -105,11 +105,9 @@ def main() -> str:
 		stdout.flush()
 		k = GetKey()
 		if k == "up":
-			if y != 0:
-				y -=1
+			y = (y-1)%len(ops)
 		elif k == "down":
-			if y != len(ops)-1:
-				y+=1
+			y = (y+1)%len(ops)
 		elif k in ("space", "enter"):
 			clear()
 			# reset

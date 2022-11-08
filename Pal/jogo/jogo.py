@@ -21,11 +21,15 @@ else:
 
 def GetKey():
 	x = GetCh()
+	#print(len(x))
 	for k in keys.keys():
+		#print(len(k))
 		if len(k) != len(x):continue
 		for i in r(k):
 			if ord(k[i]) != x[i]:break
+			#print(f"{ord(k[i])} == {x[i]}: {ord(k[i]) == x[i]}")
 		else:
+			#print(f"you pressed {keys[k]}")
 			return keys[k]
 	else:
 		return "NULL"
@@ -72,7 +76,6 @@ def LinkVids(vids: list[Video]) -> list[Video]:
 	for vid in vids:
 		# set value (name) of choice[k] as obj (based on name->obj)
 		vid.choices = {k:d[v] for k, v in vid.choices.items()}
-		vid.choices["replay"] = vid
 	return vids, d, d["intro"]
 
 def Show(ops):
@@ -81,42 +84,41 @@ def Show(ops):
 	for i in r(ops):
 		stdout.write("( )"+ops[i]+'\n')
 
-mx, my = GetTerminalSize()
+def CMD(y, playname):
+	stdout.write(pos(y)+f"[CMD]: vlc {playname}")
 
-def CMD(playname):
-	if get("--jogo").exists:
-		ss("vlc {playname}")
-	else:
-		stdout.write(pos(my-2)+f"[CMD]: vlc {playname}")
-
-def statusline(atual):
-	stdout.write(pos(my-1)+f"selected {atual}")
 
 def main() -> str:
 	vids, dic, atual = LinkVids(MakeVids())
-	ops = list(atual.choices.keys())
+	stdout.flush()
 	y = 0
+	mx, my = GetTerminalSize()
+	ops = list(atual.choices.keys())
+	#TESTZONE
+	#TESTZONE
 
 	clear()
 	Show(ops)
-	statusline(atual)
-	CMD(atual.playname)
-	while len(ops)-1:
+	stdout.write(pos(my-1)+f"selected {atual}")
+	CMD(my-2, atual.playname)
+	while len(ops):
 		# mover cursor
 		stdout.write("\x1B[%i;2H" % (y+2))
 
 		stdout.flush()
 		k = GetKey()
 		if k == "up":
-			y = (y-1)%len(ops)
+			if y != 0:
+				y -=1
 		elif k == "down":
-			y = (y+1)%len(ops)
+			if y != len(ops)-1:
+				y+=1
 		elif k in ("space", "enter"):
 			clear()
+			stdout.write(pos(my-1)+f"selected {atual.choices[ops[y]]}")
 			# reset
 			atual = atual.choices[ops[y]]
-			statusline(atual)
-			CMD(atual.playname)
+			CMD(my-2, atual.playname)
 			ops = list(atual.choices.keys())
 			y = 0
 			Show(ops)

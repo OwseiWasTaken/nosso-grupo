@@ -32,7 +32,6 @@ from sys import (
 	platform as OS,
 )
 
-import subprocess
 from sys import stdout, stdin, stderr
 from dataclasses import dataclass
 from enum import IntEnum, Enum, auto as iota	# (1, 2, 3, ...), fafo, go's iota
@@ -108,8 +107,9 @@ if OS in ["linux", "darwin"]:
 			stdout.write("\x1b[K")
 
 	def clear():
-		ss("clear")
-		#stdout.write("\x1b[0H")
+		stdout.write("\x1b[0H")
+
+
 else: # (prolly) windows
 	import msvcrt
 
@@ -120,7 +120,6 @@ if you want to help, make your commit at https://github.com/OwseiWasTaken/uti.py
 		)
 
 
-	# literally a better getch than linux, lol
 	def GetCh() -> str:
 		char = msvcrt.getch()
 		while msvcrt.kbhit():
@@ -2122,6 +2121,13 @@ _dprint_titles_to_color = {
 	"CHECK": RGB(0, 0xFF, 0),
 }
 
+
+def cmd(string: str) -> int:
+	dprint(stderr, "CMD", string + "\n")
+	stderr.flush()
+	return ss(string)
+
+
 def dprint(stream, title: str, text: str):
 	if title in _dprint_titles_to_color.keys():
 		title = (
@@ -2129,12 +2135,6 @@ def dprint(stream, title: str, text: str):
 		)
 	stream.write(title + ": " + text)
 
-def cmd(string: str, **kwargs) -> int:
-	dprint(stderr, "CMD", string + "\n")
-	stderr.flush()
-	return subprocess.run(
-		((string.split())), **kwargs
-	)
 
 def draise(errtype: str, text: str):
 	raise Exception(f"[{RGB(0xff,0,0)}{errtype}{RGB(0xff,0xff,0xff)}]{text}")

@@ -105,11 +105,11 @@ def CMD(playname):
 			stdout.write("\x1B[1;1H")
 			stdout.write('+'+'-'*(mx-2)+'+') # add 1 to y
 
-			# sem espaco
 			stdout.write("\x1B[1;4H") # inline, +3
 			# com espaco
-			#stdout.write(' '+playname[7:-4]+' ') # 7: to cut ./vids/
-			stdout.write(playname[7:-4]) # 7: to cut ./vids/
+			stdout.write(' '+playname[7:-4]+' ') # 7: to cut ./vids/
+			# sem espaco
+			#stdout.write(playname[7:-4]) # 7: to cut ./vids/
 
 			for i in r(pf):
 				stdout.write(f"\x1B[{2+i};1H|")

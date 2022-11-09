@@ -153,7 +153,14 @@ def main() -> str:
 			y = 0
 			Show(ops, c)
 		else:
-			stdout.write(pos(my-3)+f"{k} key")
+			if not gamin:
+				stdout.write(pos(my-3)+f"{k} key")
+	clear()
+	c = 0
+	if atual.playname.endswith(".txt"):
+		c = CMD(atual.playname)
+	stdout.write(f"\x1B[{c+1};{1}H")
+	stdout.write("fim.\n")
 	return ""
 
 #while True:

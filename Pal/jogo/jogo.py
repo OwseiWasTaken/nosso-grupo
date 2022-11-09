@@ -30,11 +30,21 @@ def GetKey():
 	else:
 		return "NULL"
 
+gamin = get("--jogo").exists
+
 @dataclass
 class Video:
 	def __init__(this, vidname:str, choices:dict[str, Any]): # any -> str | Video
 		this.vidname = vidname
-		this.playname = vidname+".mp4"
+		this.playname = "./vids/"+vidname
+		if exists(x:=this.playname+".mp4"):
+			this.playname = x
+		elif exists(x:=this.playname+".txt"):
+			this.playname = x
+		else:
+			if gamin:
+				print(f"arquivo {this.playname}.mp4 (ou .txt) nao existe")
+				exit(2)
 		this.choices = choices
 	def __call__(this, choice:str) -> str:
 		return "./vids/"+this.choice[choice]
@@ -84,7 +94,7 @@ def Show(ops):
 mx, my = GetTerminalSize()
 
 def CMD(playname):
-	if get("--jogo").exists:
+	if gamin:
 		ss("vlc {playname}")
 	else:
 		stdout.write(pos(my-2)+f"[CMD]: vlc {playname}")

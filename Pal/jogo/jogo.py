@@ -10,7 +10,7 @@ if OS == "linux":
 	def GetCh():
 		return subprocess.run(
 			("./lib/gtk", "--once", "--python"), capture_output=True
-		).stdout[8:-3]
+		).stdout[12:-3]
 else:
 	def clear():
 		ss("cls")
@@ -18,6 +18,7 @@ else:
 		return subprocess.run(
 			("./lib/gtk.exe", "--once", "--python"), capture_output=True
 		).stdout[8:-3]
+		#TODO: teste 8:-3 em windows
 
 def GetKey():
 	x = GetCh()
@@ -28,7 +29,7 @@ def GetKey():
 		else:
 			return keys[k]
 	else:
-		return "NULL"
+		return x
 
 gamin = get("--jogo").exists
 
@@ -85,8 +86,8 @@ def LinkVids(vids: list[Video]) -> list[Video]:
 		vid.choices["replay"] = vid
 	return vids, d, d["intro"]
 
-def Show(ops):
-	stdout.write("\x1B[1;1H")
+def Show(ops, off):
+	stdout.write(f"\x1B[{1+off};1H")
 	stdout.write("Você vai:\n")
 	for i in r(ops):
 		stdout.write("( )"+ops[i]+'\n')
@@ -95,9 +96,30 @@ mx, my = GetTerminalSize()
 
 def CMD(playname):
 	if gamin:
-		ss("vlc {playname}")
+		if playname.endswith(".mp4"):
+			ss("vlc {playname}")
+			return 0
+		else:
+			with open(playname, 'r') as f:
+				pf = f.readlines()
+			stdout.write("\x1B[1;1H")
+			stdout.write('+'+'-'*(mx-2)+'+') # add 1 to y
+
+			stdout.write("\x1B[1;4H") # inline, +3
+			stdout.write(playname[7:]) # 7: to cut ./vids/
+
+			for i in r(pf):
+				stdout.write(f"\x1B[{2+i};1H|")
+				stdout.write(pf[i])
+				stdout.write(f"\x1B[{2+i};{mx}H|")
+			stdout.write('+'+'-'*(mx-2)+'+') # add 1 to y
+
+
+			stdout.flush()
+			return len(pf)+2
 	else:
-		stdout.write(pos(my-2)+f"[CMD]: vlc {playname}")
+		stdout.write(pos(my-2)+f"[not gamin]: vlc {playname}")
+		return 0
 
 def statusline(atual):
 	stdout.write(pos(my-1)+f"selected {atual}")
@@ -108,12 +130,12 @@ def main() -> str:
 	y = 0
 
 	clear()
-	Show(ops)
+	c = CMD(atual.playname)
+	Show(ops, c)
 	statusline(atual)
-	CMD(atual.playname)
 	while len(ops)-1:
 		# mover cursor
-		stdout.write("\x1B[%i;2H" % (y+2))
+		stdout.write("\x1B[%i;2H" % (y+2+c))
 
 		stdout.flush()
 		k = GetKey()
@@ -122,16 +144,16 @@ def main() -> str:
 		elif k == "down":
 			y = (y+1)%len(ops)
 		elif k in ("space", "enter"):
-			clear()
 			# reset
 			atual = atual.choices[ops[y]]
 			statusline(atual)
-			CMD(atual.playname)
+			clear()
+			c = CMD(atual.playname)
 			ops = list(atual.choices.keys())
 			y = 0
-			Show(ops)
+			Show(ops, c)
 		else:
-			stdout.write(pos(my-2)+"NULL key")
+			stdout.write(pos(my-3)+f"{k} key")
 	return ""
 
 #while True:

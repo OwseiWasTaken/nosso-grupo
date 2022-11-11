@@ -1,10 +1,17 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap');
+/*
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap" rel="stylesheet">
+*/
 * {
     margin: 0;
     padding: 0;
 }
 
 body {
-    font-family: arial, helvetica, sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 12px;
     background-color:black;
 }
@@ -12,7 +19,7 @@ body {
 #parte-superior {
     padding: 0 5%;
     margin: 2vw;
-    height: 10vw;
+    height: 13vw;
     max-height: 90px;
     background-color: #472C20;
     display: flex;
@@ -41,7 +48,7 @@ a{
 }
 h1{
     position: absolute;
-    left: 10%;
+    left: 15%;
     z-index: 1;
     font-size: clamp(24px, 7vw, 50px);
     color:#F1E9E1;
@@ -50,7 +57,7 @@ h1{
 }
 img{
     position: absolute;
-    left: 60%;
+    left: 55%;
     width: 40%;
 }
 

@@ -38,6 +38,9 @@ p{
     font-size: clamp(12px, 3vw, 18px);
 }
 footer {
+    margin-top: 210px;
+
+    height: 40px;
     background-color: #774129;
     padding: 5px;
 }
@@ -50,5 +53,5 @@ footer > p {
     font-size: 12px;
     color: white;
     text-align: center;
-    margin: 0;
+    margin: 15px;
 }

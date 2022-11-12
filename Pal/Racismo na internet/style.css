@@ -28,39 +28,50 @@ body {
     border-radius: 2vw;
     box-shadow: 4px 3px 3px #4e3932af;
 }
-p{
-    font-size: clamp(14px, 4vw, 32px);
-    color: white;
-    text-shadow: #ffffff06 0.5px 0.5px 3px;
-    font-weight: bold;
-}
-a{
-    font-size: clamp(12px, 3.5vw, 28px);
-    color: white;
-    text-decoration: none;
-}
+ #parte-superior p { 
+     font-size: clamp(14px, 4vw, 32px); 
+     color: white; 
+     text-shadow: #ffffff06 0.5px 0.5px 3px; 
+     font-weight: bold; 
+ } 
+ #parte-superior a { 
+     font-size: clamp(12px, 3.5vw, 28px); 
+     color: white;
+     padding: 0;
+     text-decoration: none;
+ } 
+  
+ #parte-inferior { 
+     position: relative; 
+     margin: 15px;
+     display: flex; 
+     justify-content: space-between;
+ } 
+#parte-inferior h1 { 
+     display: inline;
+     font-size: clamp(24px, 7vw, 50px); 
+     color:#F1E9E1; 
+     margin: 12vw 9vw;
+     text-align: center; 
+ } 
+ img { 
+     width: 40vw;
+     height: auto;
+     margin: 0;
+ }
 
-#parte-inferior{
-    position: relative;
-    margin:25px;
-    display: flex;
-    justify-content: space-between;
+section {
+  margin-top: 100px;
 }
-h1{
-    position: absolute;
-    left: 15%;
-    z-index: 1;
-    font-size: clamp(24px, 7vw, 50px);
-    color:#F1E9E1;
-    margin: 80px 1px;
-    text-align: center;
+h1, p {
+  color: white;
+  margin: 10vw;
+  padding: 0;
+  font-weight: normal;
 }
-img{
-    position: absolute;
-    left: 55%;
-    width: 40%;
+p {
+  font-size: clamp(12px, 3.5vw, 28px);
 }
-
 
 
 .menu {

@@ -41,18 +41,20 @@ body {
      text-decoration: none;
  } 
   
- #parte-inferior { 
+  #parte-inferior { 
      position: relative; 
      margin: 15px;
      display: flex; 
      justify-content: space-between;
+     margin-bottom: 8vh;
  } 
 #parte-inferior h1 { 
      display: inline;
      font-size: clamp(24px, 7vw, 50px); 
      color:#F1E9E1; 
      margin: 12vw 9vw;
-     text-align: center; 
+     text-align: center;
+     padding: 0;
  } 
  img { 
      width: 40vw;
@@ -60,18 +62,20 @@ body {
      margin: 0;
  }
 
-section {
-  margin-top: 100px;
-}
 h1, p {
   color: white;
-  margin: 10vw;
-  padding: 0;
+  margin-left: 10vw;
+  margin-right: 10vw;
+  padding: 5px;
   font-weight: normal;
+}
+h1 {
+  font-size: clamp(16px, 4vw, 32px);
 }
 p {
   font-size: clamp(12px, 3.5vw, 28px);
 }
+
 
 
 .menu {

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,23 +10,24 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
-	
 	<style>
+
 		body {
-			background-color: rgb(62, 231, 62);
+			background-image: linear-gradient(to bottom, #03A64A, #025940);
+			margin: 0;
 		}
 
 		nav {
 			padding-left: 30px;
 			padding-right: 30px;
-			margin:20px;
+			margin: 20px;
 			height: 130px;
-			background-color:white;
+			background-color: white;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
 			border-radius: 20px;
-			box-shadow:3px 2px 5px darkgreen;
+			box-shadow: 3px 2px 7px black;
 		}
 
 		.navimg {
@@ -41,35 +43,120 @@
 			margin: 15px;
 		}
 
-		
-		div {
+
+		#img {
 			text-align: center;
 		}
-	
+
 
 		.centerimg {
 			width: 350px;
 			border-radius: 20px;
 			margin: 40px;
-			box-shadow: 6px 5px 8px darkgreen;
+			box-shadow: 3px 3px 8px black;
 			background-color: white;
 		}
-		a{
+
+		a {
 			font-family: 'Noto Sans', sans-serif;
 		}
 
+		#center {
+			margin-bottom: 150px;
+		}
+
+		#area-conteudo {
+			padding: 60px;
+		}
+
+		#titulo-principal {
+			color: #022424;
+			font-family: 'Noto Sans', sans-serif;
+			text-align: center;
+			font-size: 30px;
+			padding: 30px;
+		}
+
+		.subtitulos {
+			color: #022424;
+			font-family: 'Noto Sans', sans-serif;
+			font-size: 20px;
+			padding: 25px;
+		}
+		ul{
+			padding-left: 70px;
+		}
+		p{
+			font-size: 20px;
+			font-family: 'Noto Sans', sans-serif;
+			color:white;
+			text-indent: 20px;
+		}
+		ol{
+			margin: 25px;
+			padding-left: 50px;
+			color: white;
+			list-style-type: circle;
+			font-family: 'Noto Sans', sans-serif;
+			
+		}
 	</style>
 </head>
+
 <body>
 	<nav class="navegation">
-		<a class="navlink" href="/nosso-grupo-dev/documentos.html">Documentos</a>
-		<img class="navimg" src="https://raw.githubusercontent.com/OwseiWasTaken/nosso-grupo/dev/media/locust.png" alt="locust">
-		<a class="navlink" href="/nosso-grupo-dev/integrantes.html">Integrantes</a>
+		<a href="#area-conteudo" class="navlink" >Conteúdo</a>
+		<img class="navimg" src="https://raw.githubusercontent.com/OwseiWasTaken/nosso-grupo/dev/media/locust.png"
+			alt="locust">
+		<a class="navlink" href="./integrantes.html">Integrantes</a>
 	</nav>
-	<div>
+	<div id="img">
 		<figure id="center">
-			<img class="centerimg" src="https://raw.githubusercontent.com/OwseiWasTaken/nosso-grupo/dev/media/icones-de-localisation-de-la-carte-verte.png" alt="conectado">
+			<img class="centerimg"
+				src="https://raw.githubusercontent.com/OwseiWasTaken/nosso-grupo/dev/media/icones-de-localisation-de-la-carte-verte.png"
+				alt="conectado">
 		</figure>
 	</div>
+	<div id="area-conteudo">
+		<h1 id="titulo-principal">Conteúdo</h1>
+		<h2 class="subtitulos">Nome do projeto</h2>
+		<ul>
+			<p>Locust</p>
+		</ul>
+		<h2 class="subtitulos">Tipo do projeto</h2>
+		<ul>
+			<p>O objetivo do nosso é criar um gerenciador de redes (Hardware e Software), sendo o produto final um dispositivo que se conecta com a rede do cliente o possibilitando controlar as saídas e entradas da sua internet, gerenciar IP, gerenciar fluxo. Também é código aberto, possui uma interface Arduino que disponibiliza a instalação de diversos sensores e módulos como GPS. 
+			</p>
+		</ul>
+		<h2 class="subtitulos">Justificativa</h2>
+		<ul>
+			<p>A ideia do nosso projeto surgiu atráves de duas aulas no começo do ano de Matemática e FTP. Primeiramente foi quando a Joyce deu uma aula sobre GPS e passou um video que explicava a funcionalidade e isso foi o suficiente para surgir o interesse em fazer um projeto sobre isso, e quando o Saulo mostrou o Packet Tracer para nós achamos muito interessante a facilidade com que era possível configurar e conectar os dispositivos. Então resolvemos juntar esses dois temas para fazer o nosso projeto. </p>
+		</ul>
+		<h2 class="subtitulos">Objetivo</h2>
+		<ul>
+			<p>O nosso objetivo é facilitar o gerenciamento de redes, principalmente LAN residencial e empresarial.</p>
+		</ul>
+		<h2 class="subtitulos">Organização</h2>
+		<ul>
+			<p>Ensino Médio Técnico do Senac – Unidade Lapa Tito – Disciplina de Projeto Profissional - MED 6.</p>
+		</ul>
+		<h2 class="subtitulos">Materiais e Custo</h2>
+		<ul>
+			<p>Em nosso proejeto utilizamos os seguintes Materiais com os seus respectivos preços:
+				<ol>
+					<li>Arduino = R$60,00</li>
+				</ol>
+				<ol>
+					<li>Peças eletrônicas = R$120,00</li>
+				</ol>
+				<ol>
+					<li>Mão de Obra = R$100,00</li>
+				</ol>
+			</p>
+		</ul>
+
+
+	</div>
 </body>
+
 </html>

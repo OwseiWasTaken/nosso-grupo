@@ -1,8 +1,13 @@
 #! /usr/local/bin/python3.11
 import lib
 from lib.util import *
+from lib.util import GetCh as gtk
 from lib.keys import KeyDict as keys
 import subprocess
+
+def move(y, x):
+	print("\033[%d;%dH" % (y, x), end="")
+
 
 if OS == "linux":
 	def clear():
@@ -15,13 +20,11 @@ else:
 	def clear():
 		ss("cls")
 	def GetCh():
-		return subprocess.run(
-			("./lib/gtk.exe", "--once", "--python"), capture_output=True
-		).stdout[8:-3]
-		#TODO: teste 8:-3 em windows
+		return ''.join(list(map(chr, gtk())))
 
 def GetKey():
 	x = GetCh()
+	return keys.get(x, x)
 	for k in keys.keys():
 		if len(k) != len(x):continue
 		for i in r(k):
@@ -31,7 +34,7 @@ def GetKey():
 	else:
 		return x
 
-gamin = get("--jogo").exists
+gamin = not get("--jogo").exists
 
 @dataclass
 class Video:
@@ -138,7 +141,9 @@ def main() -> str:
 	statusline(atual)
 	while len(ops)-1:
 		# mover cursor
-		stdout.write("\x1B[%i;2H" % (y+2+c))
+		Show(ops, c)
+		stdout.write("\x1B[%i;2H@" % (y+2+c))
+		move(my, 0)
 
 		stdout.flush()
 		k = GetKey()

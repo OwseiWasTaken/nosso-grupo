@@ -21,6 +21,11 @@
 #include "sitelib.h"
 //INVALID check
 
+
+
+//COMP
+//#include <string.h>
+
 const int tempoDelay = 5000;
 const int minDelay = 3000;
 const int ledBlink = 5;
@@ -56,6 +61,14 @@ void handleIntegrantes (){
 }
 
 void handleRoot() { //função que retorna as informações para o site
+  /*
+  COMP
+  if strcmp(Locust.uri(), "/integrantes.html") {
+    Locust.send(200,"text/html", integrantes());
+    // 'return' para finalizar a função
+    return
+  }
+  */
 
   //(Abaixo está o código do gps)
   display.setLogBuffer(10, 40);

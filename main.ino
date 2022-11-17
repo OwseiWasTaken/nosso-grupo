@@ -59,7 +59,7 @@ void handleRoot() { //função que retorna as informações para o site
 
   //(Abaixo está o código do gps)
   display.setLogBuffer(10, 40);
-  
+
   bool recebido = true;
 
   while (saidaGps.available()) {
@@ -67,7 +67,7 @@ void handleRoot() { //função que retorna as informações para o site
     recebido = gps1.encode(cIn);
   }
 
-  
+
 
   // latitude longitude e idade da informação
   long latitude, longitude;
@@ -98,7 +98,7 @@ void handleRoot() { //função que retorna as informações para o site
       display.println (float (longitude) / 100000, 6);
       display.drawLogBuffer (2,2);
       dPrintln();
-      
+
    }
   if (idadeInfo!= TinyGPS::GPS_INVALID_AGE) {
      display.drawString(0,0,"idade da informacao(ms): ");
@@ -109,8 +109,6 @@ void handleRoot() { //função que retorna as informações para o site
    }
     display.drawString (0,0,"---------------------");
     dString();
-    
-  
 
   //mais informações como dia e hora
   //TODO(1): UTF-3: corrigir o fuso
@@ -181,7 +179,7 @@ void handleNotFound() {
 void setup(void) {
   //Segunda parte do programa, um gerenciador de redes.
   saidaGps.begin(9600);//velocidade de comunicação do GPS
-  
+
   Serial.begin(115200);
   Serial.println();
   Serial.println();
@@ -197,10 +195,10 @@ void setup(void) {
   imagem();
   delay(tempoDelay);
   display.clear();
-  
+
   //delay(tempoDelay); // a imagem rodará por 5 segundos, 1000 = 1 segundo
   WiFi.mode(WIFI_STA); //permite que o ESP8266 se conecte a uma rede Wi-Fi
-  WiFiManager fGen; 
+  WiFiManager fGen;
   fGen.resetSettings();
   bool bAp;
   bAp = fGen.autoConnect("LOCUST"); // Mostra o nome da rede (tipo um "Conecta Senac")
@@ -245,7 +243,7 @@ void setup(void) {
   Locust.on("/inline", [](){
     Locust.send(200, "text/plain", "this works as well");
   });
-   Locust.on("/integrantes",handleintegrantes);
+ Locust.on("/integrantes",handleIntegrantes);
 
   Locust.onNotFound(handleNotFound);
 

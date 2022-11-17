@@ -1,6 +1,6 @@
 //start
 
-String Integrantes() {
+String integrantes() {
 	String HTML = "";
 
 	HTML += "<!DOCTYPE html>";

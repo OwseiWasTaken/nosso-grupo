@@ -24,12 +24,19 @@ else:
 
 def GetKey():
 	x = GetCh()
+<<<<<<< HEAD
 	return keys.get(x, x)
+=======
+	#print(len(x))
+>>>>>>> master
 	for k in keys.keys():
+		#print(len(k))
 		if len(k) != len(x):continue
 		for i in r(k):
 			if ord(k[i]) != x[i]:break
+			#print(f"{ord(k[i])} == {x[i]}: {ord(k[i]) == x[i]}")
 		else:
+			#print(f"you pressed {keys[k]}")
 			return keys[k]
 	else:
 		return x
@@ -86,7 +93,6 @@ def LinkVids(vids: list[Video]) -> list[Video]:
 	for vid in vids:
 		# set value (name) of choice[k] as obj (based on name->obj)
 		vid.choices = {k:d[v] for k, v in vid.choices.items()}
-		vid.choices["replay"] = vid
 	return vids, d, d["intro"]
 
 def Show(ops, off):
@@ -95,8 +101,10 @@ def Show(ops, off):
 	for i in r(ops):
 		stdout.write("( )"+ops[i]+'\n')
 
-mx, my = GetTerminalSize()
+def CMD(y, playname):
+	stdout.write(pos(y)+f"[CMD]: vlc {playname}")
 
+<<<<<<< HEAD
 def CMD(playname):
 	if gamin:
 		if playname.endswith(".mp4"):
@@ -129,17 +137,30 @@ def CMD(playname):
 
 def statusline(atual):
 	stdout.write(pos(my-1)+f"selected {atual}")
+=======
+>>>>>>> master
 
 def main() -> str:
 	vids, dic, atual = LinkVids(MakeVids())
-	ops = list(atual.choices.keys())
+	stdout.flush()
 	y = 0
+	mx, my = GetTerminalSize()
+	ops = list(atual.choices.keys())
+	#TESTZONE
+	#TESTZONE
 
 	clear()
+<<<<<<< HEAD
 	c = CMD(atual.playname)
 	Show(ops, c)
 	statusline(atual)
 	while len(ops)-1:
+=======
+	Show(ops)
+	stdout.write(pos(my-1)+f"selected {atual}")
+	CMD(my-2, atual.playname)
+	while len(ops):
+>>>>>>> master
 		# mover cursor
 		Show(ops, c)
 		stdout.write("\x1B[%i;2H@" % (y+2+c))
@@ -148,15 +169,25 @@ def main() -> str:
 		stdout.flush()
 		k = GetKey()
 		if k == "up":
-			y = (y-1)%len(ops)
+			if y != 0:
+				y -=1
 		elif k == "down":
-			y = (y+1)%len(ops)
+			if y != len(ops)-1:
+				y+=1
 		elif k in ("space", "enter"):
+<<<<<<< HEAD
 			# reset
 			atual = atual.choices[ops[y]]
 			statusline(atual)
 			clear()
 			c = CMD(atual.playname)
+=======
+			clear()
+			stdout.write(pos(my-1)+f"selected {atual.choices[ops[y]]}")
+			# reset
+			atual = atual.choices[ops[y]]
+			CMD(my-2, atual.playname)
+>>>>>>> master
 			ops = list(atual.choices.keys())
 			y = 0
 			Show(ops, c)

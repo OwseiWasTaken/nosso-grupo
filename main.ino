@@ -22,7 +22,6 @@
 //INVALID check
 
 const int tempoDelay = 5000;
-
 const int minDelay = 3000;
 const int ledBlink = 5;
 
@@ -34,11 +33,10 @@ SSD1306Brzo display(0x3c, D3, D5);// Conexão da tela OLED
 SoftwareSerial saidaGps (3,1);//RX e TX GPS (conexão)
 ESP8266WebServer Locust (80); //Nome do Server
 TinyGPS gps1;// nome do GPS
-
 void imagem (){
    display.drawXbm(posX, posY,Locust_Logo_width,Locust_logo_height,Locust_Logo_bits);
    display.display();
-}  
+}
 
 void dPrintln(){
   display.display();
@@ -53,18 +51,22 @@ void dString(){
 }
 
 //CODE
+void handleIntegrantes (){
+  
+}
 void handleRoot() { //função que retorna as informações para o site
 
   //(Abaixo está o código do gps)
   display.setLogBuffer(10, 40);
   
-  bool recebido = false;
+  bool recebido = true;
 
   while (saidaGps.available()) {
     char cIn = saidaGps.read();
     recebido = gps1.encode(cIn);
   }
 
+  
 
   // latitude longitude e idade da informação
   long latitude, longitude;
@@ -77,7 +79,6 @@ void handleRoot() { //função que retorna as informações para o site
      delay(1000);
      digitalWrite(ledBlink, LOW);
      delay(1000);
-
   }
 
   if (recebido) {
@@ -120,7 +121,6 @@ void handleRoot() { //função que retorna as informações para o site
   float altitudeGPS;
   altitudeGPS = gps1.f_altitude();
 
-
   if (altitudeGPS != TinyGPS::GPS_INVALID_ALTITUDE) {
      display.drawString(0,0,"Altitude (cm): ");
      dString();
@@ -128,7 +128,6 @@ void handleRoot() { //função que retorna as informações para o site
      display.drawLogBuffer (2,4);
      dPrintln();
    }
-
 
   //Velocidade
   float velocidade;
@@ -158,13 +157,13 @@ void handleRoot() { //função que retorna as informações para o site
       display.drawLogBuffer (2,6);
       dPrintln();
     }
-
      Locust.send(200,"text/html", site());
    }
  }
 
 
 void handleNotFound() {
+  Serial.print(Locust.uri());
   String msg = "Arquivo não encontrado\n\n";
   msg += "URI: ";
   msg += Locust.uri();
@@ -246,6 +245,7 @@ void setup(void) {
   Locust.on("/inline", [](){
     Locust.send(200, "text/plain", "this works as well");
   });
+   Locust.on("/integrantes",handleintegrantes);
 
   Locust.onNotFound(handleNotFound);
 

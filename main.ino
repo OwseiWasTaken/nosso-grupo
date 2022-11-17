@@ -164,7 +164,6 @@ void handleRoot() { //função que retorna as informações para o site
 
 
 void handleNotFound() {
-  Serial.print(Locust.uri());
   String msg = "Arquivo não encontrado\n\n";
   msg += "URI: ";
   msg += Locust.uri();

@@ -1,91 +1,91 @@
-body {
-    background-color: #f6e2cf;
-    margin: 0;
-}
-
-nav {
-    padding: 0 5%;
-    margin: 1% 4%;
-    height: 11vw;
-    max-height: 70px;
-    background-color: #472C20;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 2vw;
-    box-shadow: 3px 2px 7px black;
-}
-nav > a {
-    font-size: clamp(14px, 4vw, 32px);
-    text-decoration: none;
-    color:#fff;
-    
-}
-nav > p{
-    font-size: clamp(14px, 4vw, 32px);
-    color: #fff;
-    margin: 0;
-}
-header {
-    display: flex;
-    flex-direction: column;
-    
-    align-items: center;
-    text-align: center;
-}
-header > div {
-    background-image: url(''); /* coloquei background-image em vez de <img> pq é mais fácil de mexer nas propriedades*/
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    margin: 4% 1%;
-    margin-bottom: 0;
-    width: clamp(180px, 85vw, 800px);
-    height: clamp(48px, 16vw, 150px);
-    border: solid 2px;
-    border-radius: 1.5vw;
-}
-header > p {
-    margin: 0;
-}
-hr {
-    margin: 5vw 3vw;
-}
-article {
-    max-width: 850px;
-    margin: 3% 4% 0 6%;
-}
-h1{
-    font-size: clamp(16px, 4.5vw, 28px);
-}
-p{
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: clamp(14px, 3vw, 18px);
-}
-figure {
-    margin-left: 1.5vw;
-}
-figure > img {
-    height: max(180px, 30vw);
-    width: max(180px, 30vw);
-}
-figure > figcaption {
-    font-size: 12px;
-}
-footer {
-    margin-top: 80px;
-    height: 30px;
-    background-color: #774129;
-    padding: 5px;
-}
-footer a {
-    font-size: 12px;
-    color: white;
-    text-decoration: underline #472C20 2px;
-}
-footer > p {
-    font-size: 12px;
-    color: white;
-    text-align: center;
-    margin: 10px;
-}
+body { 
+     background-color: #f6e2cf; 
+     margin: 0; 
+ } 
+  
+ nav { 
+     padding: 0 5%; 
+     margin: 1% 4%; 
+     height: 11vw; 
+     max-height: 70px; 
+     background-color: #472C20; 
+     display: flex; 
+     justify-content: space-between; 
+     align-items: center; 
+     border-radius: 2vw; 
+     box-shadow: 3px 2px 7px black; 
+ } 
+ nav > a { 
+     font-size: clamp(14px, 4vw, 32px); 
+     text-decoration: none; 
+     color:#fff; 
+      
+ } 
+ nav > p{ 
+     font-size: clamp(14px, 4vw, 32px); 
+     color: #fff; 
+     margin: 0; 
+ } 
+ header { 
+     display: flex; 
+     flex-direction: column; 
+      
+     align-items: center; 
+     text-align: center; 
+ } 
+ header > div { 
+     background-image: url(''); /* coloquei background-image em vez de <img> pq é mais fácil de mexer nas propriedades*/ 
+     background-position: center center; 
+     background-repeat: no-repeat; 
+     background-size: cover; 
+     margin: 4% 1%; 
+     margin-bottom: 0; 
+     width: clamp(180px, 85vw, 800px); 
+     height: clamp(48px, 16vw, 150px); 
+     border: solid 2px; 
+     border-radius: 1.5vw; 
+ } 
+ header > p { 
+     margin: 0; 
+ } 
+ hr { 
+     margin: 5vw 3vw; 
+ } 
+ article { 
+     max-width: 850px; 
+     margin: 3% 4% 0 6%; 
+ } 
+ h1{ 
+     font-size: clamp(18px, 4.5vw, 28px); 
+ } 
+ p{ 
+     font-family: Arial, Helvetica, sans-serif; 
+     font-size: clamp(16px, 3vw, 20px); 
+ } 
+ figure { 
+     margin-left: 1.5vw; 
+ } 
+ figure > img { 
+     height: max(180px, 30vw); 
+     width: max(180px, 30vw); 
+ } 
+ figure > figcaption { 
+     font-size: 12px; 
+ } 
+ footer { 
+     margin-top: 80px; 
+     height: 30px; 
+     background-color: #774129; 
+     padding: 5px; 
+ } 
+ footer a { 
+     font-size: 12px; 
+     color: white; 
+     text-decoration: underline #472C20 2px; 
+ } 
+ footer > p { 
+     font-size: 12px; 
+     color: white; 
+     text-align: center; 
+     margin: 10px; 
+ }

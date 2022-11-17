@@ -1,10 +1,17 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap');
+/*
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap" rel="stylesheet">
+*/
 * {
     margin: 0;
     padding: 0;
 }
 
 body {
-    font-family: arial, helvetica, sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 12px;
     background-color:black;
 }
@@ -12,7 +19,7 @@ body {
 #parte-superior {
     padding: 0 5%;
     margin: 2vw;
-    height: 10vw;
+    height: 13vw;
     max-height: 90px;
     background-color: #472C20;
     display: flex;
@@ -21,37 +28,52 @@ body {
     border-radius: 2vw;
     box-shadow: 4px 3px 3px #4e3932af;
 }
-p{
-    font-size: clamp(14px, 4vw, 32px);
-    color: white;
-    text-shadow: #ffffff06 0.5px 0.5px 3px;
-    font-weight: bold;
-}
-a{
-    font-size: clamp(12px, 3.5vw, 28px);
-    color: white;
-    text-decoration: none;
-}
+ #parte-superior p { 
+     font-size: clamp(14px, 4vw, 32px); 
+     color: white; 
+     text-shadow: #ffffff06 0.5px 0.5px 3px; 
+     font-weight: bold; 
+ } 
+ #parte-superior a { 
+     font-size: clamp(12px, 3.5vw, 28px); 
+     color: white;
+     padding: 0;
+     text-decoration: none;
+ } 
+  
+  #parte-inferior { 
+     position: relative; 
+     margin: 15px;
+     display: flex; 
+     justify-content: space-between;
+     margin-bottom: 8vh;
+ } 
+#parte-inferior h1 { 
+     display: inline;
+     font-size: clamp(24px, 7vw, 50px); 
+     color:#F1E9E1; 
+     margin: 12vw 9vw;
+     text-align: center;
+     padding: 0;
+ } 
+ img { 
+     width: 40vw;
+     height: auto;
+     margin: 0;
+ }
 
-#parte-inferior{
-    position: relative;
-    margin:25px;
-    display: flex;
-    justify-content: space-between;
+h1, p {
+  color: white;
+  margin-left: 10vw;
+  margin-right: 10vw;
+  padding: 5px;
+  font-weight: normal;
 }
-h1{
-    position: absolute;
-    left: 10%;
-    z-index: 1;
-    font-size: clamp(24px, 7vw, 50px);
-    color:#F1E9E1;
-    margin: 80px 1px;
-    text-align: center;
+h1 {
+  font-size: clamp(16px, 4vw, 32px);
 }
-img{
-    position: absolute;
-    left: 60%;
-    width: 40%;
+p {
+  font-size: clamp(12px, 3.5vw, 28px);
 }
 
 

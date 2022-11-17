@@ -22,7 +22,6 @@
 //INVALID check
 
 const int tempoDelay = 5000;
-
 const int minDelay = 3000;
 const int ledBlink = 5;
 
@@ -34,11 +33,10 @@ SSD1306Brzo display(0x3c, D3, D5);// Conexão da tela OLED
 SoftwareSerial saidaGps (3,1);//RX e TX GPS (conexão)
 ESP8266WebServer Locust (80); //Nome do Server
 TinyGPS gps1;// nome do GPS
-
 void imagem (){
    display.drawXbm(posX, posY,Locust_Logo_width,Locust_logo_height,Locust_Logo_bits);
    display.display();
-}  
+}
 
 void dPrintln(){
   display.display();
@@ -53,17 +51,22 @@ void dString(){
 }
 
 //CODE
+void handleIntegrantes (){
+  Locust.send(200,"text/html", integrantes());
+}
+
 void handleRoot() { //função que retorna as informações para o site
 
   //(Abaixo está o código do gps)
   display.setLogBuffer(10, 40);
-  
-  bool recebido = false;
+
+  bool recebido = true;
 
   while (saidaGps.available()) {
     char cIn = saidaGps.read();
     recebido = gps1.encode(cIn);
   }
+
 
 
   // latitude longitude e idade da informação
@@ -77,7 +80,6 @@ void handleRoot() { //função que retorna as informações para o site
      delay(1000);
      digitalWrite(ledBlink, LOW);
      delay(1000);
-
   }
 
   if (recebido) {
@@ -96,7 +98,7 @@ void handleRoot() { //função que retorna as informações para o site
       display.println (float (longitude) / 100000, 6);
       display.drawLogBuffer (2,2);
       dPrintln();
-      
+
    }
   if (idadeInfo!= TinyGPS::GPS_INVALID_AGE) {
      display.drawString(0,0,"idade da informacao(ms): ");
@@ -107,8 +109,6 @@ void handleRoot() { //função que retorna as informações para o site
    }
     display.drawString (0,0,"---------------------");
     dString();
-    
-  
 
   //mais informações como dia e hora
   //TODO(1): UTF-3: corrigir o fuso
@@ -120,7 +120,6 @@ void handleRoot() { //função que retorna as informações para o site
   float altitudeGPS;
   altitudeGPS = gps1.f_altitude();
 
-
   if (altitudeGPS != TinyGPS::GPS_INVALID_ALTITUDE) {
      display.drawString(0,0,"Altitude (cm): ");
      dString();
@@ -128,7 +127,6 @@ void handleRoot() { //função que retorna as informações para o site
      display.drawLogBuffer (2,4);
      dPrintln();
    }
-
 
   //Velocidade
   float velocidade;
@@ -144,24 +142,23 @@ void handleRoot() { //função que retorna as informações para o site
   satelites = gps1.satellites();
   precisao = gps1.hdop();
 
-    if (satelites !=TinyGPS::GPS_INVALID_SATELLITES) {
-      display.drawString(0,0,"Satelites: ");
-      dString();
-      display.println(satelites);
-      display.drawLogBuffer (2,5);
-      dPrintln();
-    }
-    if (precisao != TinyGPS::GPS_INVALID_HDOP) {
-      display.drawString(0,0,"Precisao (centesimos de segundo): ");
-      dString();
-      display.println(precisao);
-      display.drawLogBuffer (2,6);
-      dPrintln();
-    }
-
-     Locust.send(200,"text/html", site());
-   }
- }
+  if (satelites !=TinyGPS::GPS_INVALID_SATELLITES) {
+    display.drawString(0,0,"Satelites: ");
+    dString();
+    display.println(satelites);
+    display.drawLogBuffer (2,5);
+    dPrintln();
+  }
+  if (precisao != TinyGPS::GPS_INVALID_HDOP) {
+    display.drawString(0,0,"Precisao (centesimos de segundo): ");
+    dString();
+    display.println(precisao);
+    display.drawLogBuffer (2,6);
+    dPrintln();
+  }
+  Locust.send(200,"text/html", site());
+  }
+}
 
 
 void handleNotFound() {
@@ -182,7 +179,7 @@ void handleNotFound() {
 void setup(void) {
   //Segunda parte do programa, um gerenciador de redes.
   saidaGps.begin(9600);//velocidade de comunicação do GPS
-  
+
   Serial.begin(115200);
   Serial.println();
   Serial.println();
@@ -198,10 +195,10 @@ void setup(void) {
   imagem();
   delay(tempoDelay);
   display.clear();
-  
+
   //delay(tempoDelay); // a imagem rodará por 5 segundos, 1000 = 1 segundo
   WiFi.mode(WIFI_STA); //permite que o ESP8266 se conecte a uma rede Wi-Fi
-  WiFiManager fGen; 
+  WiFiManager fGen;
   fGen.resetSettings();
   bool bAp;
   bAp = fGen.autoConnect("LOCUST"); // Mostra o nome da rede (tipo um "Conecta Senac")
@@ -243,11 +240,9 @@ void setup(void) {
 
   Locust.on("/", handleRoot);
 
-  Locust.on("/inline", [](){
-    Locust.send(200, "text/plain", "this works as well");
-  });
+  //Locust.on("/integrantes",handleIntegrantes);
 
-  Locust.onNotFound(handleNotFound);
+  Locust.onNotFound(handleIntegrantes);
 
   Locust.begin();
   display.drawString(0,0,"Server iniciado");

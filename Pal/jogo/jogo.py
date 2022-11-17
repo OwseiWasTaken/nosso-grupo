@@ -1,8 +1,13 @@
 #! /usr/local/bin/python3.11
 import lib
 from lib.util import *
+from lib.util import GetCh as gtk
 from lib.keys import KeyDict as keys
 import subprocess
+
+def move(y, x):
+	print("\033[%d;%dH" % (y, x), end="")
+
 
 if OS == "linux":
 	def clear():
@@ -10,18 +15,20 @@ if OS == "linux":
 	def GetCh():
 		return subprocess.run(
 			("./lib/gtk", "--once", "--python"), capture_output=True
-		).stdout[8:-3]
+		).stdout[12:-3]
 else:
 	def clear():
 		ss("cls")
 	def GetCh():
-		return subprocess.run(
-			("./lib/gtk.exe", "--once", "--python"), capture_output=True
-		).stdout[8:-3]
+		return ''.join(list(map(chr, gtk())))
 
 def GetKey():
 	x = GetCh()
+<<<<<<< HEAD
+	return keys.get(x, x)
+=======
 	#print(len(x))
+>>>>>>> master
 	for k in keys.keys():
 		#print(len(k))
 		if len(k) != len(x):continue
@@ -32,13 +39,23 @@ def GetKey():
 			#print(f"you pressed {keys[k]}")
 			return keys[k]
 	else:
-		return "NULL"
+		return x
+
+gamin = not get("--jogo").exists
 
 @dataclass
 class Video:
 	def __init__(this, vidname:str, choices:dict[str, Any]): # any -> str | Video
 		this.vidname = vidname
-		this.playname = vidname+".mp4"
+		this.playname = "./vids/"+vidname
+		if exists(x:=this.playname+".mp4"):
+			this.playname = x
+		elif exists(x:=this.playname+".txt"):
+			this.playname = x
+		else:
+			if gamin:
+				print(f"arquivo {this.playname}.mp4 (ou .txt) nao existe")
+				exit(2)
 		this.choices = choices
 	def __call__(this, choice:str) -> str:
 		return "./vids/"+this.choice[choice]
@@ -78,8 +95,8 @@ def LinkVids(vids: list[Video]) -> list[Video]:
 		vid.choices = {k:d[v] for k, v in vid.choices.items()}
 	return vids, d, d["intro"]
 
-def Show(ops):
-	stdout.write("\x1B[1;1H")
+def Show(ops, off):
+	stdout.write(f"\x1B[{1+off};1H")
 	stdout.write("Você vai:\n")
 	for i in r(ops):
 		stdout.write("( )"+ops[i]+'\n')
@@ -87,6 +104,41 @@ def Show(ops):
 def CMD(y, playname):
 	stdout.write(pos(y)+f"[CMD]: vlc {playname}")
 
+<<<<<<< HEAD
+def CMD(playname):
+	if gamin:
+		if playname.endswith(".mp4"):
+			ss("vlc {playname}")
+			return 0
+		else:
+			with open(playname, 'r') as f:
+				pf = f.readlines()
+			stdout.write("\x1B[1;1H")
+			stdout.write('+'+'-'*(mx-2)+'+') # add 1 to y
+
+			stdout.write("\x1B[1;4H") # inline, +3
+			# com espaco
+			stdout.write(' '+playname[7:-4]+' ') # 7: to cut ./vids/
+			# sem espaco
+			#stdout.write(playname[7:-4]) # 7: to cut ./vids/
+
+			for i in r(pf):
+				stdout.write(f"\x1B[{2+i};1H|")
+				stdout.write(pf[i])
+				stdout.write(f"\x1B[{2+i};{mx}H|")
+			stdout.write('+'+'-'*(mx-2)+'+') # add 1 to y
+
+
+			stdout.flush()
+			return len(pf)+2
+	else:
+		stdout.write(pos(my-2)+f"[not gamin]: vlc {playname}")
+		return 0
+
+def statusline(atual):
+	stdout.write(pos(my-1)+f"selected {atual}")
+=======
+>>>>>>> master
 
 def main() -> str:
 	vids, dic, atual = LinkVids(MakeVids())
@@ -98,12 +150,21 @@ def main() -> str:
 	#TESTZONE
 
 	clear()
+<<<<<<< HEAD
+	c = CMD(atual.playname)
+	Show(ops, c)
+	statusline(atual)
+	while len(ops)-1:
+=======
 	Show(ops)
 	stdout.write(pos(my-1)+f"selected {atual}")
 	CMD(my-2, atual.playname)
 	while len(ops):
+>>>>>>> master
 		# mover cursor
-		stdout.write("\x1B[%i;2H" % (y+2))
+		Show(ops, c)
+		stdout.write("\x1B[%i;2H@" % (y+2+c))
+		move(my, 0)
 
 		stdout.flush()
 		k = GetKey()
@@ -114,16 +175,31 @@ def main() -> str:
 			if y != len(ops)-1:
 				y+=1
 		elif k in ("space", "enter"):
+<<<<<<< HEAD
+			# reset
+			atual = atual.choices[ops[y]]
+			statusline(atual)
+			clear()
+			c = CMD(atual.playname)
+=======
 			clear()
 			stdout.write(pos(my-1)+f"selected {atual.choices[ops[y]]}")
 			# reset
 			atual = atual.choices[ops[y]]
 			CMD(my-2, atual.playname)
+>>>>>>> master
 			ops = list(atual.choices.keys())
 			y = 0
-			Show(ops)
+			Show(ops, c)
 		else:
-			stdout.write(pos(my-2)+"NULL key")
+			if not gamin:
+				stdout.write(pos(my-3)+f"{k} key")
+	clear()
+	c = 0
+	if atual.playname.endswith(".txt"):
+		c = CMD(atual.playname)
+	stdout.write(f"\x1B[{c+1};{1}H")
+	stdout.write("fim.\n")
 	return ""
 
 #while True:

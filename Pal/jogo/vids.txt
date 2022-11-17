@@ -1,10 +1,17 @@
 intro
-A->pog
-B->dog
+Mercado->Mercado
+Disc->Disc
 
-pog
-C->fim
+Mercado
+Carro->Bloqueio
+Brigar->Briga
 
-dog
+Disc
+Carro->Bloqueio
+Defender->Tiro
 
-fim
+Briga
+
+Tiro
+
+Bloqueio

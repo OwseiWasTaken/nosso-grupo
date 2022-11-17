@@ -204,7 +204,7 @@ String site(){
 	HTML += "		<a href=\"#area-conteudo\" class=\"navlink\" >Conteúdo</a>";
 	HTML += "		<img class=\"navimg\" src=\"https://raw.githubusercontent.com/OwseiWasTaken/nosso-grupo/dev/media/locust.png\"";
 	HTML += "			alt=\"locust\">";
-	HTML += "		<a class=\"navlink\" href=\"./integrantes\">Integrantes</a>";
+	HTML += "		<a class=\"navlink\" href=\"./integrantes.html\">Integrantes</a>";
 	HTML += "	</nav>";
 	HTML += "	<div id=\"img\">";
 	HTML += "		<figure id=\"center\">";

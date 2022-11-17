@@ -52,8 +52,9 @@ void dString(){
 
 //CODE
 void handleIntegrantes (){
-  
+  Locust.send(200,"text/html", integrantes());
 }
+
 void handleRoot() { //função que retorna as informações para o site
 
   //(Abaixo está o código do gps)
@@ -143,23 +144,23 @@ void handleRoot() { //função que retorna as informações para o site
   satelites = gps1.satellites();
   precisao = gps1.hdop();
 
-    if (satelites !=TinyGPS::GPS_INVALID_SATELLITES) {
-      display.drawString(0,0,"Satelites: ");
-      dString();
-      display.println(satelites);
-      display.drawLogBuffer (2,5);
-      dPrintln();
-    }
-    if (precisao != TinyGPS::GPS_INVALID_HDOP) {
-      display.drawString(0,0,"Precisao (centesimos de segundo): ");
-      dString();
-      display.println(precisao);
-      display.drawLogBuffer (2,6);
-      dPrintln();
-    }
-     Locust.send(200,"text/html", site());
-   }
- }
+  if (satelites !=TinyGPS::GPS_INVALID_SATELLITES) {
+    display.drawString(0,0,"Satelites: ");
+    dString();
+    display.println(satelites);
+    display.drawLogBuffer (2,5);
+    dPrintln();
+  }
+  if (precisao != TinyGPS::GPS_INVALID_HDOP) {
+    display.drawString(0,0,"Precisao (centesimos de segundo): ");
+    dString();
+    display.println(precisao);
+    display.drawLogBuffer (2,6);
+    dPrintln();
+  }
+  Locust.send(200,"text/html", site());
+  }
+}
 
 
 void handleNotFound() {

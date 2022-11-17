@@ -240,12 +240,9 @@ void setup(void) {
 
   Locust.on("/", handleRoot);
 
-  Locust.on("/inline", [](){
-    Locust.send(200, "text/plain", "this works as well");
-  });
- Locust.on("/integrantes",handleIntegrantes);
+  //Locust.on("/integrantes",handleIntegrantes);
 
-  Locust.onNotFound(handleNotFound);
+  Locust.onNotFound(handleIntegrantes);
 
   Locust.begin();
   display.drawString(0,0,"Server iniciado");

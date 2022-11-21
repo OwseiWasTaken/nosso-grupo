@@ -32,9 +32,10 @@ body {
      font-size: clamp(14px, 4vw, 32px); 
      color: white; 
      text-shadow: #ffffff06 0.5px 0.5px 3px; 
-     font-weight: bold; 
+     font-weight: bold;
+     margin: 5px;
  } 
- #parte-superior a { 
+ #parte-superior > ul > li > a { 
      font-size: clamp(12px, 3.5vw, 28px); 
      color: white;
      padding: 0;
@@ -42,24 +43,23 @@ body {
  } 
   
   #parte-inferior { 
-     position: relative; 
-     margin: 15px;
+     margin: 0;
      display: flex; 
-     justify-content: space-between;
-     margin-bottom: 8vh;
+     justify-content: space-around;
  } 
-#parte-inferior h1 { 
-     display: inline;
-     font-size: clamp(24px, 7vw, 50px); 
+#parte-inferior h1 {
      color:#F1E9E1; 
-     margin: 12vw 9vw;
+     display: inline;
      text-align: center;
+     margin: 10vw 9vw;
      padding: 0;
+     font-size: clamp(26px, 7vw, 50px);
+     font-weight: bold;
  } 
  img { 
-     width: 40vw;
+     width: 34vw;
      height: auto;
-     margin: 0;
+     margin: 0vw;
  }
 
 h1, p {
@@ -70,7 +70,7 @@ h1, p {
   font-weight: normal;
 }
 h1 {
-  font-size: clamp(16px, 4vw, 32px);
+  font-size: clamp(16px, 4vw, 30px);
 }
 p {
   font-size: clamp(12px, 3.5vw, 28px);
@@ -102,9 +102,8 @@ p {
 
 .menu > li > ul {
     position: absolute;
-    top: 30px;
-    z-index: 2;
-    width: 150px;
+    top: 3vw;
+    width: clamp(90px, 20vw, 180px);
     background-color: rgb(50, 32, 19);
     display: none;
 }
@@ -122,6 +121,6 @@ p {
     border: 1px solid black;
     display: block;
 }
-.menu > li > ul a {
-    font-size: clamp(12px, 3vw, 16px);
+.menu a {
+    font-size: clamp(10px, 2vw, 16px);
 }

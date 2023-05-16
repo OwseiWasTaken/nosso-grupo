@@ -4,7 +4,7 @@ import (
 	"os"
 	"io"
 	"fmt"
-	"errors"
+	"strings"
 )
 
 func unpack[T any](v T, err error) (T) {
@@ -22,23 +22,34 @@ func IinA[T comparable](a T, arr ...T) bool {
 }
 
 func Die(message string) {
-	panic(errors.New(message))
+	fmt.Fprintln(os.Stderr, message)
+	os.Exit(1)
 }
 
-func ReadFileBytes(filename string) []byte {
+func readFileBytes(filename string) []byte {
 	file := unpack(os.Open(filename))
 	defer file.Close()
 	FILE := unpack(io.ReadAll(file))
 	return FILE
 }
 
+func CleanBuffer(buffer []byte) ([]byte) {
+	sbuffer := string(buffer)
+	// remove spaces
+	sbuffer = strings.Replace(sbuffer, " ", "", -1)
+	// remove tabs
+	sbuffer = strings.Replace(sbuffer, "\t", "", -1)
+	// replace \n with ;
+	sbuffer = strings.Replace(sbuffer, "\n", ";", -1)
+	buffer = []byte(sbuffer)
+	return buffer
+}
+
 func ReadFile(FileName string) (Context) {
 	var ctx Context
 	ctx.FileName = FileName
-	ctx.Buffer = ReadFileBytes(FileName)
-	//for ctx.CanRead() {
-	//	fmt.Println(ctx.Next(), ctx.Cursor)
-	//}
+	ctx.Buffer = CleanBuffer(readFileBytes(FileName))
+	ctx.TagStack.Init()
 	return ctx
 }
 
@@ -59,14 +70,12 @@ func (ctx *Context) Next() (byte) {
 }
 
 func (ctx *Context) Name() (text string) {
-	var now byte
-	text+=string(ctx.Current()) // add letter already found
-	// keep addind until syntax error, or end of string
+	var now byte = ctx.Current()
 	for ctx.CanRead() && !IinA(now, '#', '.', '{', ';') {
-		now = ctx.Next()
-		// syntax error
+		// die on syntax error
 		if IinA(now, '!', '}') { ctx.die("names can't contain the char '%c'", now) }
 		text+=string(now)
+		now = ctx.Next()
 	}
 	return text
 }
@@ -87,8 +96,23 @@ func (ctx Context) CanRead(i... int) (bool) {
 	}
 }
 
+type Stack[T any] struct {
+	stack []*T
+	index int
+}
+
+func (S *Stack[T]) Init() {
+	S.stack = make([]*T, 20)
+}
+
+func (S *Stack[T]) Push(thing *T) {
+	S.stack[S.index] = thing
+	S.index++
+}
+
 type Context struct {
 	Cursor struct {Raw, X, Y int}
 	FileName string
 	Buffer []byte
+	TagStack Stack[Tag]
 }

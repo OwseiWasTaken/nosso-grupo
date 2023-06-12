@@ -7,8 +7,10 @@ import (
 
 func main() {
 		x := mml.ReadFile("text.txt")
-		fmt.Println(x.Name())
-		fmt.Println(string(x.Current()))
-		fmt.Println(string(x.Buffer))
-		fmt.Println(x)
+		//fmt.Println("name:", x.Name())
+		//fmt.Println("current:", string(x.Current()))
+		//fmt.Println("buffer:", string(x.Buffer))
+		//fmt.Println("stack:", x.TagStack)
+		fmt.Print("")
+		x.Parse()
 }

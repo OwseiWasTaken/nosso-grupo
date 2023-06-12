@@ -1,2 +1,13 @@
-div#uid {
+div#uid.class1 {
+	style="backgroun-color: red;"
+	nav# {
+
+	};
+};
+
+div>nav{
+	a#here{href="#/"; início};
+	a{href="/usina"; usinas};
+	a{href="/egito"; Egito};
 }
+

@@ -5,10 +5,11 @@ import (
 	"strings"
 )
 
-type Id = string
 type Obj map[string]string
+type Id = string
 
 type Tag struct {
+	ID Id
 	Name string
 	Attributes Obj
 	Content string
@@ -92,8 +93,11 @@ func (T *Tag) TagTree(Objects... Obj) (*Tag) {
 	return T
 }
 
+// Head-less Tag Map
 var TagMap = map[Id]*Tag{}
+// Tag Tree starting from root
 var Document = Tag{
+		ID: "",
 		Name:"html",
 		Attributes:map[string]string{},
 		Content:"",
@@ -105,7 +109,7 @@ var Document = Tag{
 func MM() {
 	// body#uwu;
 	body := Document.MakeTag("body", Obj{"id":"uwu"})
-	// #uwu->ul->li->p#texthere
+	// #uwu>ul>li>p#texthere
 	body.TagTree(Obj{"name":"ul"}, Obj{"name":"li"}, Obj{"name":"p", "id":"texthere"})
 	// #texthere { text; class:"awhn" }
 	TagMap["texthere"].Content = "text"
@@ -113,3 +117,4 @@ func MM() {
 
 	fmt.Println(Document.Format())
 }
+

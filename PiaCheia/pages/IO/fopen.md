@@ -35,7 +35,7 @@ Abre ou cria um arquivo para escrita e leitura. O manipulador sempre escreve no 
 Não está definido onde o manipulador deve se posicionar.
 Em sistemas baseados em Unix, o manipulador se posiciona no início do arquivo.
 
-
+## b ## _binary_;
 O _modo_do_arquivo_ pode incluir a letra 'b' no final da string `"rb+"`, isso define
 que o arquivo será utilizado como informação binária, e não como textual.
 Sistemas baseados em Unix não mudam como o arquivo funciona, porém

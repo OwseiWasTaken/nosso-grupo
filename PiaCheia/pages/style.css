@@ -8,17 +8,31 @@ h1, h2, h3, h4, h5, h6 {
 	margin-block-end: 0;
 }
 
-span > i.popup {
-	display: none;
+.popup {
+	position: relative;
 }
 
-span:hover > i.popup {
-	position: relative;
-	top: 20px;
-	right: 50px;
-	display: inline-block;
-	background-color: grey;
-	border-radius: 5px;
-	border-color: black;
+.popup::after {
+	content: attr(explanation);
+	position: absolute;
+	top: -100%;
+	left: -20px;
+	background: #212121;
+	color: white;
+	text-align: center;
+	font-size: 0.7em;
+	width: 90px;
+	padding: 1px;
+	border-radius: 3px;
+	opacity: 0;
+	transition: 0.2s;
+}
+
+.popup:hover::after{
+	opacity: 1;
+}
+
+.popup:hover {
+	color: #494949;
 }
 

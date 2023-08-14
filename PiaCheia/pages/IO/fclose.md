@@ -14,7 +14,7 @@
 {
 ### Retorno: ### _int_;
 fclose() retorna 0 quando o arquivo é fechado corretamente.;
-caso contrário _EOF_(fim do arquivo) é retornado, e _errno_ é definido
+caso contrário _EOF_(fim do arquivo) é retornado, e _errno_(indicador de erro universal) é definido
 }
 
 {

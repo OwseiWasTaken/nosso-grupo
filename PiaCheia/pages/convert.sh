@@ -23,7 +23,7 @@ do
 	cat $md_file \
 	| sed 's|<|\&lt;|g;s|>|\&gt;|g' \
 	| sed 's|^{$|<div>|g;s|^}$|</div>|g' \
-	| perl -pe 's|\b_(.*?)_\((.*?)\)|<span><i>\1</i><i class="popup">\2</i></span>|g' \
+	| perl -pe 's|\b_(.*?)_\((.*?)\)|<span class="popup" explanation="\2"><i>\1</i></span>|g' \
 	| perl -pe 's|\[(.*?)\]\((.*?)\)|<a href\="\2">_\1_</a>|g' \
 	| perl -pe 's|(\s)\*(.*?)\*(\s)|\1<strong>\2</strong>\3|g' \
 	| perl -pe 's|\b_(.*?)_\b|<i>\1</i>|g' \

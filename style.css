@@ -1,0 +1,78 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+#container{
+    
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    width: 100%;
+    height: 58em;
+    background-color: white;
+}
+#logo{
+    width: 100%;
+    background-color: black;
+}
+#logo img{
+    width: 100%;
+    height: 58em;
+}
+button{
+    width: 20em;
+    height: 4em;
+    margin-top: 3.5em;
+    border-radius: 50em;
+    box-shadow: 2px 2px 5px #1B2D40;
+}
+#contInicial{
+    text-align: center;
+    padding-top: 80px;
+    padding-bottom: 50px;
+    margin: 50px auto;
+}
+#contInicial h1{
+    font-size: 2.5em;
+    color: black;
+    font-family: 'Poppins', sans-serif;
+}
+a{
+    text-decoration:none ;
+    color: black;
+    font-size: 20px;
+    font-family: 'Poppins', sans-serif;
+}
+a:hover{
+    color: black;
+}
+
+/*tags_style*/
+
+#topo_html > p {
+    color: white;
+    font-family: 'Poppins', sans-serif;
+}
+
+#container_html{
+    
+
+}
+
+#topo_html{
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    width: 100%;
+    height: 15%;
+    background-color: #375A80;
+}
+
+#menu_lateral{
+    display: flex;
+    justify-content: stretch;
+    text-align: center;
+    width: 20%;
+    height: 100%;
+    background-color: #5287BF;
+}

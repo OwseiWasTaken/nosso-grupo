@@ -22,6 +22,7 @@ func init() {
 
 func main() {
 	http.Handle("/", StaticPage{"./files/main.html"})
+	http.Handle("/convert", StaticPage{"./files/convert.html"})
 	http.Handle("/article/", http.StripPrefix("/article/", http.FileServer(http.Dir("pages/"))))
 	http.Handle("/files/", http.StripPrefix("/files/", http.FileServer(http.Dir("files/"))))
 

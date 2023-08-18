@@ -1,15 +1,23 @@
 # MarkDown #
 
-## Tamanhos ##;
+## Tamanhos ##
 
-md`\# texto \# ->` # texto #;
-md`#\# texto \#\# ->` ## texto ##;
-md`##\# texto \##\# ->` ### texto ###;
-md`###\# texto \###\# ->` #### texto ####;
-md`####\# texto \####\# ->` ##### texto #####;
-md`#####\# texto \#####\# ->` ###### texto ######;
 
-## Links ##;
+md`\# texto \# ->` # texto #
+
+md`#\# texto \#\# ->` ## texto ##
+
+md`##\# texto \##\# ->` ### texto ###
+
+md`###\# texto \###\# ->` #### texto ####
+
+md`####\# texto \####\# ->` ##### texto #####
+
+md`#####\# texto \#####\# ->` ###### texto ######
+
+
+## Links ##
+
 
 md`[[IO/sync]] ->`
 [[IO/sync]]
@@ -18,54 +26,79 @@ md`[Esse link vai para a mesma página](IO/sync) ->`
 [Esse link vai para a mesma página](IO/sync)
 
 
-## Estrutura ##;
+## Estrutura ##
 
-md`{` isso cria uma div;
-md`}` isso fecha a div;
 
-md`{#essa-div` isso cria uma div com o id "essa-div";
-md`}` isso ainda fecha a div;
+md`{` isso cria uma div
 
-## Formatação ##;
+md`}` isso fecha a div
 
-### Código ###;
+
+md`{#essa-div` isso cria uma div com o id "essa-div"
+
+md`}` isso ainda fecha a div
+
+
+## Formatação ##
+
+
+### Código ###
+
 md``
- SQL``;
- 	SELECT * FROM accounts;;;
+ SQL``
+
+ 	SELECT * FROM accounts;;
+
  `` ->
 ``
 
 SQL``
-SELECT * FROM accounts;;
+SELECT * FROM accounts;
+
 ``
 
-md``;
- SQL`INSERT INTO accounts (name) VALUES ("manse");`;
-`` ->
-SQL`INSERT INTO accounts (name) VALUES ("manse");`;
-
-### formatação básica ###;
 md``
- \_Itálico_ _Itálico_;
- \_Itálico_(com explicação) _Itálico_(com explicação);
- \*Negrito*  *Negrito*;
+
+ SQL`INSERT INTO accounts (name) VALUES ("manse");`
+
+`` ->
+SQL`INSERT INTO accounts (name) VALUES ("manse");`
+
+
+### formatação básica ###
+
+md``
+ \_Itálico_ _Itálico_
+
+ \_Itálico_(com explicação) _Itálico_(com explicação)
+
+ \*Negrito*  *Negrito*
+
 ``
 
-## HTML ##;
+## HTML ##
 
-### tag manual ###;
+
+### tag manual ###
+
 
 \{{img src="/files/ddg.png"}}
 
 {{img src="/files/ddg.png"}}
 
-### várias tags ###;
+### várias tags ###
 
-\{{ol}};
-\{{li}} Oi  \{{/li}};
-\{{li}} Bom \{{/li}};
-\{{li}} Dia \{{/li}};
-\{{/ol}};
+
+\{{ol}}
+
+\{{li}} Oi  \{{/li}}
+
+\{{li}} Bom \{{/li}}
+
+\{{li}} Dia \{{/li}}
+
+\{{/ol}}
+
 
 {{ol}}
 {{li}} Oi  {{/li}}
@@ -73,24 +106,42 @@ md``
 {{li}} Dia {{/li}}
 {{/ol}}
 
-\{{table}};
-&nbsp;\{{thead}};
-&nbsp;&nbsp;\{{tr}};
-&nbsp;&nbsp;&nbsp;\{{th}} Nome  \{{/th}};
-&nbsp;&nbsp;&nbsp;\{{th}} Idade \{{/th}};
-&nbsp;&nbsp;\{{/tr}};
-&nbsp;\{{/thead}};
-&nbsp;\{{tbody}};
-&nbsp;&nbsp;\{{tr}};
-&nbsp;&nbsp;&nbsp;\{{td}} Pedro \{{/td}};
-&nbsp;&nbsp;&nbsp;\{{td}} 17 \{{/td}};
-&nbsp;&nbsp;\{{/tr}};
-&nbsp;&nbsp;\{{tr}};
-&nbsp;&nbsp;&nbsp;\{{td}} Sof \{{/td}};
-&nbsp;&nbsp;&nbsp;\{{td}} 18 \{{/td}};
-&nbsp;&nbsp;\{{/tr}};
-&nbsp;\{{/tbody}};
-\{{/table}};
+\{{table}}
+
+&nbsp;\{{thead}}
+
+&nbsp;&nbsp;\{{tr}}
+
+&nbsp;&nbsp;&nbsp;\{{th}} Nome  \{{/th}}
+
+&nbsp;&nbsp;&nbsp;\{{th}} Idade \{{/th}}
+
+&nbsp;&nbsp;\{{/tr}}
+
+&nbsp;\{{/thead}}
+
+&nbsp;\{{tbody}}
+
+&nbsp;&nbsp;\{{tr}}
+
+&nbsp;&nbsp;&nbsp;\{{td}} Pedro \{{/td}}
+
+&nbsp;&nbsp;&nbsp;\{{td}} 17 \{{/td}}
+
+&nbsp;&nbsp;\{{/tr}}
+
+&nbsp;&nbsp;\{{tr}}
+
+&nbsp;&nbsp;&nbsp;\{{td}} Sof \{{/td}}
+
+&nbsp;&nbsp;&nbsp;\{{td}} 18 \{{/td}}
+
+&nbsp;&nbsp;\{{/tr}}
+
+&nbsp;\{{/tbody}}
+
+\{{/table}}
+
 
 {{table}}
 	{{thead}}

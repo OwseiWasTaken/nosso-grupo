@@ -2,7 +2,17 @@
 
 set -e
 
-for md_file in $@
+# if argc==0
+if [[ $# = '0' ]]
+then
+	# do pages/./file.md
+	files=$(echo ./pages/*/*.md)
+else
+	# do args
+	files=$@
+fi
+
+for md_file in $files
 do
 	# remove .md from filename
 	page_path=$(echo $md_file | sed 's|\(.*\)\.md|\1|')

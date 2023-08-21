@@ -10,56 +10,67 @@
 <br>
 <div id="include">
 <code class="C">
-<h2>#include &lt;stdio.h&gt;</h2><br>
-<h2>FILE <strong>fopen(const char </strong>caminho_do_arquivo, const char *modo_do_arquivo);</h2><br>
+<h2>#include &lt;stdio.h&gt;</h2>
+<br>
+<h2>FILE <strong>fopen(const char </strong>caminho_do_arquivo, const char *modo_do_arquivo);</h2>
+<br>
 </code>
 </div>
 <br>
 <div id="summary">
-<h3>A função <i>fopen()</i> abre o arquivo indicato pela string <i>caminho_do_arquivo</i> e retorna um ponteiro para um manipulador de arquivo</h3><br>
+<h3>A função <i>fopen()</i> abre o arquivo indicato pela string <i>caminho_do_arquivo</i> e retorna um ponteiro para um manipulador de arquivo</h3>
+<br>
 <h3>O argumento <i>modo_do_arquivo</i> define como o arquivo pode ser utilizado</h3>
 </div>
 <br>
 <br>
-<h3>MODOS:</h3><br>
+<h3>MODOS:</h3>
+<br>
 <div id="modos">
 <div>
-<h2>r</h2> <i>read</i><br>
+<h2>r</h2> <i>read</i>
+<br>
 Abre o arquivo para leitura. O manipulador se posiciona no início do arquivo.
 </div>
 <br>
 <div>
-<h2>r+</h2> <i>read+write</i><br>
+<h2>r+</h2> <i>read+write</i>
+<br>
 Abre o arquivo para leitura e escrita. O manipulador se posiciona no início do
 arquivo, possivelmente subustituindo informação ao escrever.
 </div>
 <br>
 <div>
-<h2>w</h2> <i>write</i><br>
+<h2>w</h2> <i>write</i>
+<br>
 Apaga o conteúdo do arquivo e o abre para escrita. O manipulador se posiciona
 no início do arquivo.
 </div>
 <br>
 <div>
-<h2>w+</h2> <i>write+read</i><br>
+<h2>w+</h2> <i>write+read</i>
+<br>
 Apaga o conteúdo do arquivo caso ele já exista, caso contrário, cria um arquivo
 para escrita e leitura. O manipulador se posiocina no início do arquivo.
 </div>
 <br>
 <div>
-<h2>a</h2> <i>append</i><br>
+<h2>a</h2> <i>append</i>
+<br>
 Abre ou cria um arquivo para escrita. O manipulador se posiciona no final do arquivo.
 </div>
 <br>
 <div>
-<h2>a+</h2> <i>append+read</i><br>
+<h2>a+</h2> <i>append+read</i>
+<br>
 Abre ou cria um arquivo para escrita e leitura. O manipulador sempre escreve no final do arquivo.
 Não está definido onde o manipulador deve se posicionar.
 Em sistemas baseados em Unix, o manipulador se posiciona no início do arquivo.
 </div>
 <br>
 <div>
-<h2>b</h2> <i>binary</i><br>
+<h2>b</h2> <i>binary</i>
+<br>
 O <i>modo_do_arquivo</i> pode incluir a letra 'b' no final da string `"rb+"`, isso define
 que o arquivo será utilizado como informação binária, e não como textual.
 Sistemas baseados em Unix não mudam como o arquivo funciona, porém
@@ -68,17 +79,17 @@ geralmente é utilizado para maior claridade e portabilidade
 </div>
 <br>
 <div id="notes">
-<h3>Notas:</h3><br>
+<h3>Notas:</h3>
+<br>
 Lembre-se que é <strong>necessário</strong> rodar [[IO/fclose]] quando o arquivo não será mais utilizado
 </div>
 <br>
 <div id="see-also">
-<h3>Veja também:</h3><br>
-<a href="/article/IO/fclose.html">IO/fclose</a> Para fechar arquivos abertos.<br>
-<a href="/article/IO/sync.html">IO/syncfs</a> Para executar alterações pendentes.<br>
-</div>
+<h3>Veja também:</h3>
 <br>
-<script>
-window.alert("hi!")
-</script>
+<a href="/article/IO/fclose.html">IO/fclose</a> Para fechar arquivos abertos.
+<br>
+<a href="/article/IO/sync.html">IO/syncfs</a> Para executar alterações pendentes.
+<br>
+</div>
 </body></html>

@@ -24,13 +24,15 @@ const Replaceble = [
 	[/\B(?<!\\)### (.*?) ###\B/gm, "<h3>$1</h3>"],
 	[/\B(?<!\\)## (.*?) ##\B/gm, "<h2>$1</h2>"],
 	[/\B(?<!\\)# (.*?) #\B/gm, "<h1>$1</h1>"],
+	[/^(\w*)?`(.*?)`/gm, "<code class=\"$1\">$2</code>"],
+	[/(?<!\\){{(.*?)( .*?)?}}/gm, "<$1$2>"],
 	[/\\\*/gm, "*"],
 	[/\\_/gm, "_"],
 	[/\\#/gm, "#"],
 	[/\\\[/gm, "["],
 	[/\\\]/gm, "]"],
-	[/^(\w*)?`(.*?)`/gm, "<code class=\"$1\">$2</code>"],
-	[/(?<!\\){{(.*?)( .*?)?}}/gm, "<$1$2>"],
+	[/\\\{/gm, "{"],
+	[/\\\}/gm, "}"],
 ];
 
 function TranslateMd(MdText) {
@@ -42,12 +44,21 @@ function TranslateMd(MdText) {
 	return MdText;
 }
 
+function MdReplacer(read, write) {
+	return (e)=>{
+		write.innerHTML=TranslateMd(read.value)
+	}
+}
+
 window.onload = () => {
 	const codeArea = document.getElementById("code");
 	const htmlArea = document.getElementById("result")?.contentDocument.querySelector("html");
 
-	codeArea.addEventListener("keyup", (e)=>{
-		htmlArea.innerHTML=TranslateMd(codeArea.value)
-	})
+	//codeArea.addEventListener("keyup", (e)=>{
+	//	htmlArea.innerHTML=TranslateMd(codeArea.value)
+	//})
+	codeArea.addEventListener("keyup",
+		MdReplacer(codeArea, htmlArea))
+	htmlArea.innerHTML=TranslateMd(codeArea.value)
 }
 

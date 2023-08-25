@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>sync</title>
+	<link rel="stylesheet" href="/files/page-style.css">
+</head>
+<body>
+<h1>fsync</h1>
+<br>
+<div id="include">
+<code class="C">
+<h2>#include &lt;unistd.h&gt;</h2>
+<br>
+<h2>void sync(void);</h2>
+<br>
+<h2>int syncfs(int fd);</h2>
+<br>
+</code>
+</div>
+<br>
+<div id="summary">
+<h3>A função <i>sync()</i> executa todas as alterações de arquivos pendentes no sistema operacional</h3>
+<br>
+<h3>A função <i>sync()</i> não tem como falhar</h3>
+<br>
+<h3>A função <i>syncfs()</i> executa todas as alterações de arquivos que pendentes no sistema de arquivos em que o arquivo referido por <i>fd</i> está</h3>
+<br>
+</div>
+<br>
+<div id="return">
+<h3>Retorno:</h3> <i>int</i>
+<br>
+A função <i>syncfs()</i> retorna 0 quando os arquivos são alterados corretamente.
+Caso contrário -1 é retornado, e <span class="popup" explanation="indicador de erro universal"><i>errno</i></span> é definido apropriadamente
+</div>
+<br>
+<div id="errors">
+<h3>Erros:</h3>
+<br>
+<i>EBADFD</i> <i>fd</i> Não é uma referência válida a um arquivo
+<br>
+<i>EIO</i> Um erro ocorreu ao tentar utilizar a mídia física que seria modificada
+<br>
+<i>ENOSPC</i> não há espaço suficiente para guardar todas as alterações
+<br>
+<i>ENOSPC</i>, <i>EDQUOT</i> não há espaço suficiente para guardar o arquivo (este erro apenas existe em servidores NFS)
+<br>
+</div>
+<br>
+</body></html>

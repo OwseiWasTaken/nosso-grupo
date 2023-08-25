@@ -1,0 +1,183 @@
+* {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: none;
+    background: #252525;
+    display: flex;
+    height: 100vh;
+}
+
+nav {
+    flex: 1;
+    background: #013c6d;
+    z-index: 2;
+}
+
+main {
+    flex: 6;
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #2d2d2d;
+    height: 5em;
+    padding: 0.3em 3em;
+    box-shadow: 0 3px 7px #11111116;
+    z-index: 1;
+}
+#open-menu, #close-menu {
+    display: none;
+}
+header>img {
+    width: 40px;
+}
+header>p {
+    font-weight: bolder;
+}
+
+section {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #252525;
+    height: 100%;
+    margin-right: 7px;
+    overflow-y: scroll;
+}
+
+article {
+    flex: 75%;
+    padding: 4em 1.5em;
+    border-right: solid 1px #181818;
+}
+
+article>h1 {
+    font-size: 3.5em;
+    text-align: center;
+    margin-bottom: 1.5em;
+    padding-bottom: 1em;
+    border-bottom: solid 1px #181818;
+}
+
+article h2 {
+    font-size: 1.8em;
+    margin: 1.5em 0 0.5em 0.3em;
+}
+
+aside {
+    flex: 25%;
+    padding: 1em;
+    box-sizing: border-box;
+}
+
+aside>h2 {
+    font-size: 1.1em;
+    text-align: center;
+    margin: 0.8em 0 2em 0;
+}
+
+aside>div {
+    display: flex;
+    align-content: start;
+    flex-wrap: wrap;
+    gap: 1em;
+    padding: 0.5em;
+}
+
+aside iframe {
+    flex: 100%;
+    width: 80%;
+    height: 140px;
+    border-radius: 10px;
+}
+
+footer {
+    flex: 100%;
+    padding: 4em 2em;
+    text-align: center;
+}
+
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    width: 5px;
+    background: #1e1e56;
+    border-radius: 15px;
+    transition: 0.2s;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #121273;
+}
+
+
+@media screen and (max-width: 1000px) {
+
+    nav {
+        flex: 2;
+    }
+
+    main {
+        flex: 7;
+    }
+
+    section {
+        padding: 0 2em;
+    }
+
+    article, aside {
+        flex: 100%;
+    }
+
+    article {
+        padding: 4em 0;
+        border-right: none;
+        border-bottom: solid 1px #181818;
+    }
+
+    aside {
+        padding: 1em 0;
+    }
+}
+
+@media screen and (max-width: 650px) {
+
+    nav {
+        position: absolute;
+        width: 60vw;
+        height: 100vh;
+        transform: translateX(-100%);
+        transition: 0.6s ease;
+    }
+    .slide {
+        transform: translateX(0%);
+    }
+
+    #open-menu, #close-menu {
+        display: block;
+    }
+
+    main {
+        flex: 100%;
+    }
+
+
+    aside>h2 {
+        font-size: 1.3em;
+    }
+    aside iframe {
+        height: 160px;
+    }
+
+}

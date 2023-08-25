@@ -2,9 +2,10 @@
 
 class Dir {
 	constructor(filename) {
+		this.ShrinkName = ShrinkPath(filename)
 		this.isDir = true;
-		this.fsEndpoint = "/fs/"+filename
-		this.filesEndpoint = "/files/"+filename
+		this.fsEndpoint = "/fs/"+this.ShrinkName
+		this.filesEndpoint = "/files/"+this.ShrinkName
 		this.filename = filename
 		this.fullname = BaseName(filename)
 		this.name = filename.split(".").slice(0, -1).join(".")
@@ -69,7 +70,11 @@ function StripLastSlash(path) {
 // ./pages/./here/../there -> pages/there
 // "./" -> ""
 function ShrinkPath(path) {
-	return StripLastSlash(path)
+	return path
+		.replaceCertain(/\/\w*\/\.\.\//g, "/")
+		.replaceCertain(/\/\.\//g, "/")
+		.replace(/^\.?\//, "")
+		.replace(/\/$/, "")
 }
 
 function FS_aproach(tree, path) {
@@ -157,38 +162,48 @@ function FS_redraw(
 	oldDialog, FS, CWD,
 	callback, options=FS_default_draw_options
 ) {
+
 	// define unset option 'a as FS_default_draw_options['a]
 	options = {...FS_default_draw_options, ...options};
-	const Dialog = hCreateElement("dialog", {
-		class:"FS-file-select-dialog"
-	}, [
-		createElement("h2", "At /"+CWD, {
-			style:{
-				position:"relative",
-				display:"inline-block",
-				bottom:"20px",
-				margin:0,
-				right:"10px",
-			}
-		}),
-		hCreateElement("table", [
-			hCreateElement("thead", [
-				hCreateElement("tr", [
-					createElement("th", "Nome"),
-					createElement("th", "Endpoint"),
-					createElement("th", "Tamanho"),
-					createElement("th", "Última Modificação"),
+	let Dialog = null;
+	if (oldDialog === null) {
+		Dialog = hCreateElement("dialog", {
+			class:"FS-file-select-dialog"
+		}, [
+			createElement("h2", "At /"+CWD, {
+				style:{
+					position:"relative",
+					display:"inline-block",
+					bottom:"20px",
+					margin:0,
+					right:"10px",
+				}
+			}),
+			hCreateElement("table", [
+				hCreateElement("thead", [
+					hCreateElement("tr", [
+						createElement("th", "Nome"),
+						createElement("th", "Endpoint"),
+						createElement("th", "Tamanho"),
+						createElement("th", "Última Modificação"),
+					]),
 				]),
+				createElement("tbody"),
 			]),
-			createElement("tbody"),
-		]),
-		hCreateElement("div", {id:"FS-bottom"}, [
-			createElement("input", {id:"FS-search"}),
-			createElement("button", {id:"FS-select"}, "Selecionar"),
-			createElement("button", {id:"FS-create-file"}, "Novo Arquivo"),
-			createElement("button", {id:"FS-create-folder"}, "Nova Pasta"),
-		]),
-	])
+			hCreateElement("div", {id:"FS-bottom"}, [
+				createElement("input", {id:"FS-search"}),
+				createElement("button", {id:"FS-select"}, "Selecionar"),
+				createElement("button", {id:"FS-create-file"}, "Novo Arquivo"),
+				createElement("button", {id:"FS-create-folder"}, "Nova Pasta"),
+			]),
+		])
+		document.body.appendChild(Dialog)
+		Dialog.showModal()
+	} else {
+		Dialog = oldDialog;
+		cquery(oldDialog, "tbody").innerHTML = "";
+	}
+
 	const tbody = cquery(Dialog, "tbody")
 	const makeFile = cquery(Dialog, "#FS-create-file")
 	const makeFolder = cquery(Dialog, "#FS-create-folder")
@@ -197,39 +212,34 @@ function FS_redraw(
 	if (!options.createFolder) makeFolder.disabled = true;
 
 	makeFile.addEventListener("click", (event)=>{
-		log(FS_walk(FS, CWD))
+		FS_walk(FS, CWD).push(new File("new-file.txt"))
 	})
 
 	makeFolder.addEventListener("click", (event)=>{
-		log(FS_walk(FS, CWD))
-	})
-
-	const folders = FS_walk(FS, CWD).filter(({isDir})=>isDir)
-	const files = FS_walk(FS, CWD).filter(({isDir})=>!isDir)
+		FS_walk(FS, CWD).push(new Dir("new-folder/"))
+	});
 
 	//TODO only do folders.push(new Dir("..")) when ShrinkPath is implemented
 	if (CWD) {
 		const upDir = new Dir("../")
-		upDir.filesEndpoint = "/files/"+PathName(CWD).join("/")
-		upDir.filename = PathName(CWD).join("/")
+		debugger;
+		//upDir.filesEndpoint = "/files/"+PathName(CWD).join("/")
+		//upDir.filename = PathName(CWD).join("/")
 		tbody.appendChild( FS_TROW(upDir, ()=>{
 			FS_redraw(Dialog, FS, upDir.filename, callback, options)
 		}))
 	}
 
-	folders.forEach(folder=>{
+	FS_walk(FS, CWD).filter(({isDir})=>isDir).forEach(folder=>{
 		tbody.appendChild( FS_TROW(folder, ()=>{
 			FS_redraw(Dialog, FS, folder.filename, callback, options)
 		}))
 	})
 
-	files.forEach(file=>{
+	FS_walk(FS, CWD).filter(({isDir})=>!isDir).forEach(file=>{
 		tbody.appendChild( FS_TROW(file, (e)=>{callback(file, e)}))
 	})
 
-	oldDialog?.remove()
-	document.body.appendChild(Dialog)
-	Dialog.showModal()
 }
 
 function FS_TROW(fileOrDir, Click) {

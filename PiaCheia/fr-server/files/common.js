@@ -68,4 +68,13 @@ function UnixFormatDate(date) {
 	return `${day} ${Mon} ${hour}:${min}`
 }
 
-//TODO implement text dialog
+//TODO implement text query dialog
+
+String.prototype.replaceCertain = function (searchPattern, replacePattern="") {
+	let txt = this.replaceAll(searchPattern, replacePattern);
+	if (txt.search(searchPattern) != -1) {
+		txt = txt.replaceCertain(searchPattern, replacePattern)
+	}
+	return txt
+}
+

@@ -2,10 +2,11 @@
 
 class Dir {
 	constructor(filename) {
-		this.ShrinkName = ShrinkPath(filename)
 		this.isDir = true;
-		this.fsEndpoint = "/fs/"+this.ShrinkName
-		this.filesEndpoint = "/files/"+this.ShrinkName
+		this.UnresolvedName = filename
+		filename = ShrinkPath(filename)
+		this.fsEndpoint = "/fs/"+filename
+		this.filesEndpoint = "/files/"+filename
 		this.filename = filename
 		this.fullname = BaseName(filename)
 		this.name = filename.split(".").slice(0, -1).join(".")
@@ -37,6 +38,8 @@ class Dir {
 class File {
 	constructor(filename) {
 		this.isDir = false;
+		this.UnresolvedName = filename
+		filename = ShrinkPath(filename)
 		this.fsEndpoint = "/fs/"+filename
 		this.filesEndpoint = "/files/"+filename
 		this.filename = filename
@@ -71,8 +74,9 @@ function StripLastSlash(path) {
 // "./" -> ""
 function ShrinkPath(path) {
 	return path
-		.replaceCertain(/\/\w*\/\.\.\//g, "/")
-		.replaceCertain(/\/\.\//g, "/")
+		.replaceCertain(/\/\//g, "/") // "//" -> "/"
+		.replaceCertain(/[^/]*\/\.\./g, "/") // "*/.." -> ""
+		.replaceCertain(/\/\.\//g, "/") // "/." -> "/"
 		.replace(/^\.?\//, "")
 		.replace(/\/$/, "")
 }
@@ -116,37 +120,39 @@ function BuildFilsSystem(PathRes) {
 	return ROOT;
 }
 
-//TODO get this list from /fs/
-const PATHRES = [
-	"pages/",
-		"pages/IO/",
-			"pages/IO/fopen.html",
-			"pages/IO/sync.html",
-			"pages/IO/fclose.html",
-			"pages/IO/md.html",
-		"pages/OS/",
-			"pages/OS/alert.html",
-			"pages/OS/assert.html",
-			"pages/OS/nice.html",
-]
+const FS_REMIRROR = async () => {
+	const ret = await fetch("/fs/").then(a=>a.json())
+	FS_MIRROR_PATH = () => {
+		return ret;
+	}
+	return ret;
+}
+
+let FS_MIRROR_PATH = () => {
+	throw "FS_REMIRROR must be ran before FS_MIRROR_PATH";
+}
 
 function SelectFile(callback) {
-	const FS = BuildFilsSystem(PATHRES)
+	const FS = BuildFilsSystem(FS_MIRROR_PATH())
 	let CWD = "";
-	FS_redraw( null, FS, CWD, callback, {
+	return FS_redraw( null, FS, CWD, callback, {
 		createFile:true,
+		createFolder:true,
 	})
 }
 
-window.onload = () => {
-	SelectFile(log);
+window.onload = async () => {
+	await FS_REMIRROR();
+	SelectFile((file, e)=>{
+		log(file, e)
+	});
 }
 
 function GoToFile(CWD="") {
 	let callback = (file)=>{
 		window.location = file.filesEndpoint;
 	}
-	const FS = BuildFilsSystem(PATHRES)
+	const FS = BuildFilsSystem(FS_MIRROR_PATH())
 	FS_redraw(null, FS, CWD, callback)
 }
 
@@ -202,44 +208,56 @@ function FS_redraw(
 	} else {
 		Dialog = oldDialog;
 		cquery(oldDialog, "tbody").innerHTML = "";
+		cquery(oldDialog, "h2").innerText = "At /"+CWD;
 	}
 
-	const tbody = cquery(Dialog, "tbody")
-	const makeFile = cquery(Dialog, "#FS-create-file")
-	const makeFolder = cquery(Dialog, "#FS-create-folder")
+	const tbody = cquery(Dialog, "tbody");
+	let makeFile = cquery(Dialog, "#FS-create-file");
+	let makeFolder = cquery(Dialog, "#FS-create-folder");
 
-	if (!options.createFile) makeFile.disabled = true;
-	if (!options.createFolder) makeFolder.disabled = true;
+	makeFile = RemoveListeners(makeFile);
+	makeFolder = RemoveListeners(makeFolder);
 
+	makeFile.disabled = !options.createFile;
+	makeFolder.disabled = !options.createFolder;
+
+	//TODO actually make a folder or file
 	makeFile.addEventListener("click", (event)=>{
-		FS_walk(FS, CWD).push(new File("new-file.txt"))
+		const FileName = CWD+"/"+prompt("Nome para novo arquivo");
+		FS_walk(FS, CWD).push(new File(FileName))
+		FS_redraw(Dialog, FS, CWD, callback, options)
 	})
-
 	makeFolder.addEventListener("click", (event)=>{
-		FS_walk(FS, CWD).push(new Dir("new-folder/"))
+		const FolderName = CWD+"/"+prompt("Nome para nova pasta")+"/";
+		FS_walk(FS, CWD).push(new Dir(FolderName))
+		FS_redraw(Dialog, FS, CWD, callback, options)
 	});
 
-	//TODO only do folders.push(new Dir("..")) when ShrinkPath is implemented
 	if (CWD) {
-		const upDir = new Dir("../")
-		debugger;
-		//upDir.filesEndpoint = "/files/"+PathName(CWD).join("/")
-		//upDir.filename = PathName(CWD).join("/")
+		const upDir = new Dir(CWD+"/..")
+		upDir.fullname = "..";
 		tbody.appendChild( FS_TROW(upDir, ()=>{
 			FS_redraw(Dialog, FS, upDir.filename, callback, options)
 		}))
 	}
 
-	FS_walk(FS, CWD).filter(({isDir})=>isDir).forEach(folder=>{
+	FS_walk(FS, CWD)
+		.filter( ({isDir}) => isDir )
+		.forEach(folder=>{
 		tbody.appendChild( FS_TROW(folder, ()=>{
 			FS_redraw(Dialog, FS, folder.filename, callback, options)
 		}))
 	})
 
-	FS_walk(FS, CWD).filter(({isDir})=>!isDir).forEach(file=>{
-		tbody.appendChild( FS_TROW(file, (e)=>{callback(file, e)}))
+	FS_walk(FS, CWD)
+		.filter( ({isDir}) => !isDir )
+		.forEach(file=>{
+		tbody.appendChild( FS_TROW(file, (e)=>{
+			Dialog.close();
+			callback(file, e);
+		}))
 	})
-
+	return Dialog;
 }
 
 function FS_TROW(fileOrDir, Click) {

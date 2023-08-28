@@ -25,7 +25,7 @@ do
 <html>
 <head>
 	<title>$page_name</title>
-	<link rel=\"stylesheet\" href=\"/files/page-style.css\">
+	<link rel=\"stylesheet\" href=\"/files/css/page-style.css\">
 </head>
 <body>
 " > $html_file

@@ -40,7 +40,7 @@ function TranslateMd(MdText) {
 	Replaceble.forEach((rnr)=>{
 		MdText=MdText.replaceAll(rnr[0], rnr[1])
 	})
-	MdText = "<link rel=\"stylesheet\" href=\"/files/page-style.css\">"+MdText;
+	MdText = "<link rel=\"stylesheet\" href=\"/files/css/page-style.css\">"+MdText;
 	return MdText;
 }
 
@@ -53,12 +53,9 @@ function MdReplacer(read, write) {
 window.onload = () => {
 	const codeArea = document.getElementById("code");
 	const htmlArea = document.getElementById("result")?.contentDocument.querySelector("html");
+	codeArea.addEventListener("input", MdReplacer(codeArea, htmlArea));
 
-	//codeArea.addEventListener("keyup", (e)=>{
-	//	htmlArea.innerHTML=TranslateMd(codeArea.value)
-	//})
-	codeArea.addEventListener("keyup",
-		MdReplacer(codeArea, htmlArea))
 	htmlArea.innerHTML=TranslateMd(codeArea.value)
 }
+
 

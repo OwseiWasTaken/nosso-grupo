@@ -78,3 +78,10 @@ String.prototype.replaceCertain = function (searchPattern, replacePattern="") {
 	return txt
 }
 
+function RemoveListeners(oldEl) {
+	const newEl = oldEl.cloneNode();
+	newEl.innerHTML = oldEl.innerHTML;
+	oldEl.parentElement.replaceChild(newEl, oldEl);
+	return newEl;
+}
+

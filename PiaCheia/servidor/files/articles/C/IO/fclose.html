@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>fclose</title>
+	<link rel="stylesheet" href="/files/page-style.css">
+</head>
+<body>
+<h1>fclose</h1>
+<br>
+<div id="include">
+<code class="C">
+<h2>#include &lt;stdio.h&gt;</h2>
+<br>
+<h2>int fclose(FILE *stream);</h2>
+<br>
+</code>
+</div>
+<br>
+<div id="summary">
+<h3>A função <i>fclose()</i> fecha o arquivo indicado pelo pointeiro do manipulador de arquivo <i>stream</i>.</h3>
+<br>
+<h3>A função <strong>não</strong> deve ser chamada com um pointeiro inválido, ou com um mainpulador de um arquivo que já foi fechado.</h3>
+<br>
+<h3><strong>Nenhuma</strong> ação deve ocorrer com um arquivo após ele ser fechado por <i>fclose()</i>.</h3>
+<br>
+</div>
+<br>
+<div id="return">
+<h3>Retorno:</h3> <i>int</i>
+<br>
+fclose() retorna 0 quando o arquivo é fechado corretamente.
+<br>
+caso contrário <span class="popup" explanation="fim do arquivo"><i>EOF</i></span> é retornado, e <span class="popup" explanation="indicador de erro universal"><i>errno</i></span> é definido apropriadamente
+</div>
+<br>
+<div id="errors">
+<h3>Erros:</h3>
+<br>
+<i>EBADF</i> o manipulador da <i>stream</i> é inválido
+<br>
+<i>EIO</i> um erro no hardware ocorreu
+<br>
+<i>EINTR</i> um sinal do sistema operacional interrompeu a função
+<br>
+<i>ENOSPC</i>, <i>EDQUOT</i> não há espaço suficiente para guardar o arquivo (este erro apenas existe em servidores NFS)
+</div>
+<br>
+<div id="notes">
+<h3>Notas:</h3>
+<br>
+É recomendado rodar [[IO/sync]] após uma call de fclose() que falhou, para garantir que o mínimo de informação seja perdido
+</div>
+<br>
+</body></html>

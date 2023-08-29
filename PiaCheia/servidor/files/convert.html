@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title> Editor de Artigo </title>
+		<script src="/files/js/common.js"></script>
+
+		<script src="/files/js/fs.js"></script>
+		<link rel="stylesheet" href="/files/css/fs.css">
+
+		<script src="/files/js/convert.js"></script>
+		<link rel="stylesheet" href="/files/css/convert.css">
+	</head>
+	<body>
+		<span id="topline">
+			<button type="button" id="new-file">New</button>
+			<button type="button" id="open-file">Open</button>
+			<button type="button" id="save-file">Save</button>
+			<button type="button" id="save-file-as">Save as</button>
+		</span>
+		<textarea id="code">
+# Olá #
+
+## [MarkDown Cheat Sheet](MD/CheatSheet) ##
+		</textarea>
+		<br>
+		<iframe id="result"> </iframe>
+	</body>
+</html>

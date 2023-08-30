@@ -10,6 +10,14 @@ const insertBefore = (el, newnode) => el.parentElement.insertBefore(newnode, el)
 const insertAfter = (el, newnode) => el.parentElement.insertBefore(newnode, el.nextSibling);
 const remove = (arr, item) => delete arr[arr.indexOf(item)];
 const urlVars = immutable(parseUrlVars(window.location.search));
+const LANGS = immutable([
+	"C",
+	"PHP",
+	"JS",
+	"CSS",
+	"MD",
+	"SQL",
+])
 
 function hCreateElement(name, elements=[], attributes=null) {
 	if (!Array.isArray(elements)) {

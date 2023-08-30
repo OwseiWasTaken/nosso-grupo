@@ -29,6 +29,10 @@ func FileSystemAPI(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func ArticleSystemAPI(w http.ResponseWriter, r *http.Request) {
+	fmt.Println(r.URL.Path, r.Method)
+}
+
 func init() {
 	flag.StringVar(&ADDR, "addr", "127.0.0.1:80", "endereço de ip do servidor")
 	flag.Parse()
@@ -38,6 +42,7 @@ func main() {
 	http.Handle("/", StaticPage{"./files/main.html"})
 	http.Handle("/convert", StaticPage{"./files/convert.html"})
 
+	http.Handle("/list-articles", StaticPage{"./files/articles.html"})
 	http.Handle("/articles/", http.StripPrefix("/articles/", http.FileServer(http.Dir("files/articles/"))))
 	http.Handle("/files/", http.StripPrefix("/files/", http.FileServer(http.Dir("files/"))))
 	http.HandleFunc("/fs/", FileSystemAPI)

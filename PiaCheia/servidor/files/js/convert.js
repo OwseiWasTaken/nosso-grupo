@@ -82,14 +82,7 @@ window.onload = async () => {
 	const fileCont = LoadFile(openFile);
 
 	const lang = removePrefix(urlVars["file"], "/").split("/", 3).at(-1);
-	const inlang = lang != urlVars["file"] && fIinAv(lang,
-		"C",
-		"PHP",
-		"JS",
-		"CSS",
-		"MD",
-		"SQL",
-	);
+	const inlang = lang != urlVars["file"] && fIinA(lang, LANGS);
 
 	const codeArea = id("code");
 	const htmlArea = id("result")?.contentDocument.querySelector("html");

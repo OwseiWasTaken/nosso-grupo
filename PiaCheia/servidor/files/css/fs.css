@@ -1,3 +1,9 @@
+
+/* all FS- elemnts */ /*apparently*/
+[class|="FS"] {
+
+}
+
 .FS-btn-like-link {
 	color: -webkit-link;
 	cursor: pointer;
@@ -50,3 +56,4 @@
 #FS-create-file {
 	width: 8%;
 }
+

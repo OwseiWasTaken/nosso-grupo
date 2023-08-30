@@ -8,6 +8,7 @@ const cquery = (doc, query)=>doc.querySelector(query);
 const cqueryAll = (doc, query)=>doc.querySelectorAll(query);
 const insertBefore = (el, newnode) => el.parentElement.insertBefore(newnode, el);
 const insertAfter = (el, newnode) => el.parentElement.insertBefore(newnode, el.nextSibling);
+const insertTop = (el, newnode) => el.insertBefore( newnode, el.firstChild)
 const remove = (arr, item) => delete arr[arr.indexOf(item)];
 const urlVars = immutable(parseUrlVars(window.location.search));
 const LANGS = immutable([
@@ -19,6 +20,7 @@ const LANGS = immutable([
 	"SQL",
 ])
 
+//TODO get timecard/sources's hCreateElement that works as cE and hC
 function hCreateElement(name, elements=[], attributes=null) {
 	if (!Array.isArray(elements)) {
 		[elements, attributes] = [attributes, elements];

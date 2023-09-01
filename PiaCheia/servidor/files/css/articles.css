@@ -1,0 +1,95 @@
+/* CSS Tree menu styles */
+ol.tree {
+	padding: 0 0 0 10px;
+}
+
+li {
+	position: relative;
+	margin-left: -15px;
+	list-style: none;
+}
+
+li.file {
+	margin-left: -1px !important;
+}
+
+li.file a {
+	background: url(/files/cdn/document.png) 0 0 no-repeat;
+	color: #4C4C4C;
+	padding-left: 21px;
+	text-decoration: none;
+	display: block;
+}
+
+/* file icons
+li.file a[href $= '.html']	{ background: url(/files/cdn/document.png) 0 0 no-repeat; }
+li.file a[href $= '.css']	  { background: url(/files/cdn/document.png) 0 0 no-repeat; }
+li.file a[href $= '.js']		{ background: url(/files/cdn/document.png) 0 0 no-repeat; }
+li.file a[href $= '.c']	    { background: url(/files/cdn/document.png) 0 0 no-repeat; }
+*/
+
+li input {
+	position: absolute;
+	left: 0;
+	margin-left: 0;
+	opacity: 0;
+	z-index: 2;
+	cursor: pointer;
+	height: 1em;
+	width: 1em;
+	top: 0;
+}
+
+li input + ol {
+	background: url(/files/cdn/toggle-small-expand.png) 40px 0 no-repeat;
+	margin: -0.938em 0 0 -44px; /* 15px */
+	height: 1em;
+}
+
+li input + ol > li {
+	display: none;
+	margin-left: -14px !important;
+	padding-left: 1px;
+}
+
+li label {
+	background: url(/files/cdn/folder-horizontal.png) 15px 1px no-repeat;
+	cursor: pointer;
+	display: block;
+	padding-left: 37px;
+}
+
+li input:checked + ol {
+	background: url(/files/cdn/toggle-small.png) 40px 5px no-repeat;
+	margin: -20px 0 0 -44px;
+	padding: 1.563em 0 0 80px;
+	height: auto;
+}
+
+li input:checked + ol > li {
+	display: block; margin: 0 0 2px;
+}
+
+li input:checked + ol > li:last-child {
+	margin: 0 0 1px;
+}
+
+html,body,article,aside {
+	height: 100%;
+	margin: 0;
+}
+
+h1,h2,h3,h4,h5,h6 {
+	margin: 0;
+}
+
+aside {
+	width: 20%;
+	padding-left: 1rem;
+	margin-right: 1.5rem;
+	float: left;
+	box-shadow: 5px 0px 0px 0px #29627e;
+	font-style: italic;
+	color: #29627e;
+}
+

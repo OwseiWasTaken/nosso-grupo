@@ -8,7 +8,42 @@ import (
 	"io/fs"
 	"net/http"
 	"path/filepath"
+	// "database/sql"
+	// _ "github.com/mattn/go-sqlite3"
 )
+
+//var db *sql.DB
+
+//const SchemaAccounts = `
+//CREATE TABLE IF NOT EXISTS accounts (
+//	accountId INTEGER NOT NULL PRIMARY KEY AUTO INCREAMENT,
+//	accountName TEXT NOT NULL,
+//	passhash INT NOT NULL,
+//	isAdmin BOOLEAN NOT NULL DEFAULT false
+//);
+//`
+
+//const SchemaArticle = `
+//CREATE TABLE IF NOT EXISTS articles (
+//	articleId INTEGER NOT NULL PRIMARY KEY AUTO INCREMENT,
+//	articleName TEXT NOT NULL,
+//  path TEXT NOT NULL,
+//	lastEditor INTERGER NOT NULL,
+	/*unix timestamp*/
+//	lastEdit DATE NOT NULL,
+//	UNIQUE (path),
+//	FOREIGN KEY(lastEditor) REFERENCES accounts(accountId),
+//);
+//`
+
+//const SchemaComment = `
+//CREATE TABLE IF NOT EXISTS comments (
+//	commentId INTEGER NOT NULL PRIMARY KEY AUTO INCREAMENT,
+//	posterId INTEGER NOT NULL,
+//  text TEXT NOT NULL,
+//	FOREIGN KEY(posterId) REFERENCES accounts(accountId),
+//);
+//`
 
 var ( // flags
 	ADDR string
@@ -29,8 +64,8 @@ func FileSystemAPI(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func ArticleSystemAPI(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(r.URL.Path, r.Method)
+func ArticleSystem(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, p.FileName)
 }
 
 func init() {
@@ -43,10 +78,10 @@ func main() {
 	http.Handle("/convert", StaticPage{"./files/convert.html"})
 
 	http.Handle("/list-articles", StaticPage{"./files/articles.html"})
-	http.Handle("/articles/", http.StripPrefix("/articles/", http.FileServer(http.Dir("files/articles/"))))
+	http.HandleFunc("/articles/", ArticleSystemAPI)
+	//http.Handle("/articles/", http.StripPrefix("/articles/", http.FileServer(http.Dir("files/articles/"))))
 	http.Handle("/files/", http.StripPrefix("/files/", http.FileServer(http.Dir("files/"))))
 	http.HandleFunc("/fs/", FileSystemAPI)
-	http.HandleFunc("/art/", ArticleSystemAPI)
 
 	fmt.Println("running")
 

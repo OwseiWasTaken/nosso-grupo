@@ -8,45 +8,7 @@ import (
 	"io/fs"
 	"net/http"
 	"path/filepath"
-	// "database/sql"
-	// _ "github.com/mattn/go-sqlite3"
-)
-
-//var db *sql.DB
-
-//const SchemaAccounts = `
-//CREATE TABLE IF NOT EXISTS accounts (
-//	accountId INTEGER NOT NULL PRIMARY KEY AUTO INCREAMENT,
-//	accountName TEXT NOT NULL,
-//	passhash INT NOT NULL,
-//	isAdmin BOOLEAN NOT NULL DEFAULT false
-//);
-//`
-
-//const SchemaArticle = `
-//CREATE TABLE IF NOT EXISTS articles (
-//	articleId INTEGER NOT NULL PRIMARY KEY AUTO INCREMENT,
-//	articleName TEXT NOT NULL,
-//  path TEXT NOT NULL,
-//	lastEditor INTERGER NOT NULL,
-	/*unix timestamp*/
-//	lastEdit DATE NOT NULL,
-//	UNIQUE (path),
-//	FOREIGN KEY(lastEditor) REFERENCES accounts(accountId),
-//);
-//`
-
-//const SchemaComment = `
-//CREATE TABLE IF NOT EXISTS comments (
-//	commentId INTEGER NOT NULL PRIMARY KEY AUTO INCREAMENT,
-//	posterId INTEGER NOT NULL,
-//  text TEXT NOT NULL,
-//	FOREIGN KEY(posterId) REFERENCES accounts(accountId),
-//);
-//`
-
-var ( // flags
-	ADDR string
+	. "piacheia/util"
 )
 
 type StaticPage struct{ FileName string }
@@ -65,12 +27,23 @@ func FileSystemAPI(w http.ResponseWriter, r *http.Request) {
 }
 
 func ArticleSystem(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, p.FileName)
+	http.ServeFile(w, r, "files/articles"+r.URL.Path[10:])
 }
+
+var ( // flags
+	ADDR string
+	SQLFILE string
+)
 
 func init() {
 	flag.StringVar(&ADDR, "addr", "127.0.0.1:80", "endereço de ip do servidor")
+	flag.StringVar(&SQLFILE, "sql", "paicheia.db", "Arquivo de sqlite3 para ser usado como base de dados")
 	flag.Parse()
+
+	InitSQL(SQLFILE)
+	//fmt.Println(Articles)
+	//fmt.Println(Comments)
+	//fmt.Println(Accounts)
 }
 
 func main() {
@@ -78,7 +51,7 @@ func main() {
 	http.Handle("/convert", StaticPage{"./files/convert.html"})
 
 	http.Handle("/list-articles", StaticPage{"./files/articles.html"})
-	http.HandleFunc("/articles/", ArticleSystemAPI)
+	http.HandleFunc("/articles/", ArticleSystem)
 	//http.Handle("/articles/", http.StripPrefix("/articles/", http.FileServer(http.Dir("files/articles/"))))
 	http.Handle("/files/", http.StripPrefix("/files/", http.FileServer(http.Dir("files/"))))
 	http.HandleFunc("/fs/", FileSystemAPI)
@@ -107,15 +80,3 @@ func Ls(dir string) []string {
 	return files
 }
 
-func Panic(e error) {
-	if (e != nil) {
-		panic(e)
-	}
-}
-
-func Unpack[T any](v T, e error) T {
-	if (e != nil) {
-		panic(e)
-	}
-	return v
-}

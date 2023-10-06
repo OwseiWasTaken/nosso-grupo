@@ -24,6 +24,17 @@ CREATE TABLE IF NOT EXISTS accounts (
 	UNIQUE (accountName)
 );`
 
+const INSERT_ARTICLE = `
+INSERT INTO articles
+	(path, lastEditor, lastEdit)
+VALUES
+	(?, ?, DATETIME("now"));
+`
+func (a *Account) NewArticle(filepath string) (int64, error) {
+	r := Unpack(db.Exec(INSERT_ARTICLE, filepath, a.AccountId))
+	return r.LastInsertId()
+}
+
 type Article struct {
 	ArticleId int
 	Path string
@@ -38,7 +49,14 @@ func (art Article) GetComments() (comments []*Comment) {
 	}
 	return comments
 }
-func (art *ArticleId) AddComent(posterId int, text string) {
+
+const INSERT_HEAD_COMMENT = `
+INSERT INTO comments
+	(articleId, posterId, text)
+VALUES
+	(?, ?, ?);
+`
+func (art *Article) AddComent(posterId int, text string) {
 	Panic(db.Exec(INSERT_HEAD_COMMENT,
 		art.ArticleId, posterId, text,
 	))
@@ -63,6 +81,7 @@ type Comment struct {
 	Text string
 	Children []int // not in sql
 }
+
 func (cmt Comment) GetParent() *Comment {
 	if cmt.ParentCommentId == 0 {return nil}
 	return &Comments[cmt.ParentCommentId]
@@ -74,6 +93,12 @@ func (cmt Comment) GetChildren() (comments []*Comment) {
 	}
 	return comments
 }
+const INSERT_COMMENT = `
+INSERT INTO comments
+	(parentCommentId, articleId, posterId, text)
+VALUES
+	(?, ?, ?, ?);
+`
 func (cmt *Comment) AddComent(posterId int, text string) {
 	Panic(db.Exec(INSERT_COMMENT,
 		cmt.CommentId, cmt.ArticleId,
@@ -96,34 +121,9 @@ CREATE TABLE IF NOT EXISTS comments (
 // CHECK ( MAX(rowid) FROM accounts ) >= posterId
 // figure out how to check if parentComment's articleId = articleId
 
-const INSERT_COMMENT = `
-INSERT INTO comments
-	(parentCommentId, articleId, posterId, text)
-VALUES
-	(?, ?, ?, ?);
-`
 
-const INSERT_HEAD_COMMENT = `
-INSERT INTO comments
-	(articleId, posterId, text)
-VALUES
-	(?, ?, ?);
-`
 
-const INSERT_ARTICLE = `
-INSERT INTO articles
-	(path, lastEditor, lastEdit)
-VALUES
-	(?, ?, DATETIME("now"));
-`
 
-const UPDATE_ARTICLE_CONTENT = `
-UPDATE articles SET
-	lastEditor=?,
-	lastEdit=DATETIME("now")
-WHERE
-	( articleId IS ? );
-`
 
 const UPDATE_ARTICLE_PATH = `
 UPDATE articles SET

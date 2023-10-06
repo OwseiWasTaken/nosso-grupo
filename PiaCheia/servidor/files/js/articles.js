@@ -69,6 +69,7 @@ function makeLang(FS, langPath, langName) {
 	}
 }
 
+//TODO include aside in <article>
 function AddArticleListing(container) {
 	const FS = BuildFilsSystem(FS_MIRROR_PATH())
 	container.appendChild(
@@ -77,4 +78,3 @@ function AddArticleListing(container) {
 		)
 	);
 }
-

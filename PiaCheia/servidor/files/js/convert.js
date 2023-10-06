@@ -78,11 +78,11 @@ window.onload = async () => {
 	await FS_REMIRROR()
 	const FS = BuildFilsSystem(FS_MIRROR_PATH())
 
-	const openFile = urlVars["file"]??"files/pages/MD/CheatSheet.md"
+	const openFile = urlVars["file"]??"files/markdowns/MD/CheatSheet.md"
 	const fileCont = LoadFile(openFile);
 
-	const lang = removePrefix(urlVars["file"], "/").split("/", 3).at(-1);
-	const inlang = lang != urlVars["file"] && fIinA(lang, LANGS);
+	const lang = removePrefix(openFile, "/").split("/", 3).at(-1);
+	const inlang = lang != openFile && fIinA(lang, LANGS);
 
 	const codeArea = id("code");
 	const htmlArea = id("result")?.contentDocument.querySelector("html");
@@ -90,9 +90,9 @@ window.onload = async () => {
 
 	id("-file")
 	id("open-file").addEventListener("click", ()=>{
-		GetFile(({filesEndpoint})=>{
+		GetFile( ({filesEndpoint}) =>{
 			window.location.search = "file="+filesEndpoint
-		}, "pages", inlang?lang:"")
+		}, "markdowns", inlang?lang:"")
 	})
 	id("-file")
 	id("-file")

@@ -111,7 +111,7 @@ function skipSubstr(str, substr, howmany = 1, eatlast = true) {
 function MdToArticle(MdLink) {
 	log(MdLink)
 	return MdLink.replace(
-		/files\/pages\/(.*).md/,
+		/files\/markdowns\/(.*).md/,
 		"articles/$1.html",
 	);
 }
@@ -120,7 +120,7 @@ function ArticleToMd(ArticleLink) {
 	log(ArticleLink)
 	return ArticleLink.replace(
 		/articles\/(.*)\.html/,
-		"files/pages/$1.md",
+		"files/markdowns/$1.md",
 	)
 }
 

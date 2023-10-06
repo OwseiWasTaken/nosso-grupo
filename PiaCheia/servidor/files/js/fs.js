@@ -70,7 +70,7 @@ function StripLastSlash(path) {
 	return path;
 }
 
-// ./pages/./here/../there -> pages/there
+// ./markdowns/./here/../there -> markdowns/there
 // "./" -> ""
 function FS_ShrinkPath(path) {
 	return path

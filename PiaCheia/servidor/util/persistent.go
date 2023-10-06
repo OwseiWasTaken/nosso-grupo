@@ -2,24 +2,29 @@ package util
 
 import (
 	"time"
+	"fmt"
 
 	"database/sql"
 	_ "github.com/mattn/go-sqlite3"
 )
 
 var db *sql.DB
+var Accounts = []*Account{&Account{0, "Super Admin", 0, true}}
+var Articles = []*Article{&Article{ Path: "index.html" }}
+var Comments = []*Comment{&Comment{ ArticleId: -1 }}
+var NameToAccount = make(map[string]*Account)
 
 type Account struct {
 	AccountId int
 	AccountName string
-	Passhash uint64
+	Passhash HashResult
 	IsAdmin bool
 }
 const SchemaAccounts = `
 CREATE TABLE IF NOT EXISTS accounts (
 	accountId INTEGER NOT NULL PRIMARY KEY,
 	accountName TEXT NOT NULL,
-	passhash INT NOT NULL,
+	passhash BIGINT NOT NULL,
 	isAdmin BOOLEAN NOT NULL DEFAULT false,
 	UNIQUE (accountName)
 );`
@@ -30,9 +35,16 @@ INSERT INTO accounts
  	(?, ?, 0);
 `
 
-func newAccount(name, password string) *Account {
-	r := Unpack(db.EXEC(INSERT_ACCOUNT), name, Hash(password)
-	return nil
+func NewAccount(name, password string) *Account {
+	pshash := Hash(password)
+	r := Unpack(db.Exec(INSERT_ACCOUNT, name, pshash))
+	acc := &Account{
+		int(Unpack(r.LastInsertId())),
+		name, pshash, false,
+	}
+	Accounts = append(Accounts, acc)
+	NameToAccount[acc.AccountName] = acc
+	return acc
 }
 
 const INSERT_ADMIN_ACCOUNT = `
@@ -42,6 +54,17 @@ INSERT INTO accounts
  	(?, ?, 1);
 `
 
+func newAdminAccount(name, password string) *Account {
+	pshash := Hash(password)
+	r := Unpack(db.Exec(INSERT_ADMIN_ACCOUNT, name, pshash))
+	acc := &Account{
+		int(Unpack(r.LastInsertId())),
+		name, pshash, true,
+	}
+	Accounts = append(Accounts, acc)
+	NameToAccount[acc.AccountName] = acc
+	return acc
+}
 
 const INSERT_ARTICLE = `
 INSERT INTO articles
@@ -84,7 +107,7 @@ CREATE TABLE IF NOT EXISTS articles (
 func (art Article) GetComments() (comments []*Comment) {
 	comments = make([]*Comment, len(art.Comments))
 	for i, cmntId := range art.Comments {
-		comments[i] = &Comments[cmntId]
+		comments[i] = Comments[cmntId]
 	}
 	return comments
 }
@@ -95,10 +118,18 @@ INSERT INTO comments
 VALUES
 	(?, ?, ?);
 `
-func (art *Article) AddComent(posterId int, text string) {
-	Panic(db.Exec(INSERT_HEAD_COMMENT,
+func (art *Article) AddComent(posterId int, text string) (int) {
+	r := Unpack(db.Exec(INSERT_HEAD_COMMENT,
 		art.ArticleId, posterId, text,
 	))
+	cmt := &Comment{
+		int(Unpack(r.LastInsertId())), -1,
+		art.ArticleId,
+		posterId, text, []int{},
+	}
+	Comments = append(Comments, cmt)
+	art.Comments = append(art.Comments, int(cmt.CommentId))
+	return cmt.CommentId
 }
 
 
@@ -109,12 +140,11 @@ WHERE
 	( articleId IS ? );
 `
 func (art *Article) UpdatePath(newPath string) error {
-	/*
-	 if (Exists(newPath)) {
+	if (Exists(newPath)) {
 		return fmt.Errorf("%s is already used", newPath)
-  	}
- 	*/
-	Unpack(db.Exec(UPDATE_ARTICLE_PATH), newPath, art.ArticleId)
+	}
+	Unpack(db.Exec(UPDATE_ARTICLE_PATH, newPath, art.ArticleId))
+	return nil
 }
 
 type Comment struct {
@@ -128,7 +158,7 @@ type Comment struct {
 const SchemaComment = `
 CREATE TABLE IF NOT EXISTS comments (
 	commentId INTEGER NOT NULL PRIMARY KEY,
-	parentCommentId INTEGER NOT NULL DEFAULT 0,
+	parentCommentId INTEGER NOT NULL DEFAULT -1,
 	articleId INTEGER NOT NULL,
 	posterId INTEGER NOT NULL,
 	text TEXT NOT NULL,
@@ -137,19 +167,23 @@ CREATE TABLE IF NOT EXISTS comments (
 	FOREIGN KEY(parentCommentId) REFERENCES comments(commentId),
 	CHECK ( parentCommentId IS NULL OR parentCommentId < commentId )
 );`
-// figure out how to check if posterId is valid account
-// CHECK ( MAX(rowid) FROM accounts ) >= posterId
-// figure out how to check if parentComment's articleId = articleId
-
 
 func (cmt Comment) GetParent() *Comment {
 	if cmt.ParentCommentId == 0 {return nil}
-	return &Comments[cmt.ParentCommentId]
+	return Comments[cmt.ParentCommentId]
 }
 func (cmt Comment) GetChildren() (comments []*Comment) {
 	comments = make([]*Comment, len(cmt.Children))
 	for i, cmntId := range cmt.Children {
-		comments[i] = &Comments[cmntId]
+		comments[i] = Comments[cmntId]
+	}
+	return comments
+}
+func (cmt Comment) GetDownstreamFamily() (comments []*Comment) {
+	comments = []*Comment{}
+	for _, cmntId := range cmt.Children {
+		comments = append(comments, Comments[cmntId])
+		comments = append(comments, Comments[cmntId].GetDownstreamFamily()...)
 	}
 	return comments
 }
@@ -159,11 +193,20 @@ INSERT INTO comments
 VALUES
 	(?, ?, ?, ?);
 `
-func (cmt *Comment) AddComent(posterId int, text string) {
-	Panic(db.Exec(INSERT_COMMENT,
+
+func (cmt *Comment) AddComent(posterId int, text string) int {
+	r := Unpack(db.Exec(INSERT_COMMENT,
 		cmt.CommentId, cmt.ArticleId,
 		posterId, text,
 	))
+	newcmt := &Comment{
+		int(Unpack(r.LastInsertId())),
+		cmt.CommentId,
+		cmt.ArticleId,
+		posterId, text, []int{},
+	}
+	cmt.Children = append(cmt.Children, newcmt.CommentId)
+	return newcmt.CommentId
 }
 
 
@@ -179,22 +222,15 @@ const GET_COMMENTS = `
 SELECT * FROM comments;
 `
 
-// TODO: _could_ COUNT Articles, Accounts, Comments
-// : to preallocate arrays
-var Accounts = []Account{Account{0, "Super Admin", 0, true}}
-var Articles = []Article{Article{ Path: "index.html" }}
-var Comments = []Comment{Comment{ ArticleId: -1 }}
-
 func InitSQL(SQLFILE string) {
 	db = Unpack(sql.Open("sqlite3", SQLFILE))
 	Unpack(db.Exec(SchemaAccounts))
 	Unpack(db.Exec(SchemaArticle))
 	Unpack(db.Exec(SchemaComment))
 
-
 	accountRows := Unpack(db.Query(GET_ACCOUNTS))
 	for accountRows.Next() {
-		var acc Account
+		var acc = new(Account)
 		Panic(accountRows.Scan(
 			&acc.AccountId,
 			&acc.AccountName,
@@ -202,11 +238,12 @@ func InitSQL(SQLFILE string) {
 			&acc.IsAdmin,
 		))
 		Accounts = append(Accounts, acc)
+		NameToAccount[acc.AccountName] = acc
 	}
 
 	articleRows := Unpack(db.Query(GET_ARTICLES))
 	for articleRows.Next() {
-		var art Article
+		var art = new(Article)
 		Panic(articleRows.Scan(
 			&art.ArticleId,
 			&art.Path,
@@ -218,7 +255,7 @@ func InitSQL(SQLFILE string) {
 
 	commentRows := Unpack(db.Query(GET_COMMENTS))
 	for commentRows.Next() {
-		var cmt Comment
+		var cmt = new(Comment)
 		Panic(commentRows.Scan(
 			&cmt.CommentId,
 			&cmt.ParentCommentId,

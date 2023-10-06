@@ -1,0 +1,99 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.arealogin{
+    background-color: #14548C;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.login{
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+    height: 400px;
+    background-color: #14122A;
+    padding: 30px;
+}
+.login form{
+    display: flex;
+    flex-direction: column;
+}
+.login input{
+    color: white;
+    background-color: #0B427A;
+    padding-left: 10px;
+    border: none;
+    outline: none;
+    border-radius: 8px;
+    margin-top: 20px;
+    width: 350px;
+    height: 40px;
+}
+.login img{
+    width: 80px;
+    margin-bottom: 15px;
+    height: auto;
+}
+input::placeholder{
+    color: white;
+    font-size: 15px;
+}
+form [type="submit"]{
+    display: block;
+    background-color: #3DA1C8;   
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 20px;
+}
+p{
+    align-items: flex-start;
+    margin-top: 20px;
+    color: white;
+
+}
+a{
+   color: #3DA1C8;
+}
+.areacadastro{
+    background-color: #14548C;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cadastro{
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+    height: 450px;
+    background-color: #14122A;
+    padding: 30px;
+}
+.cadastro form{
+    display: flex;
+    flex-direction: column;
+}
+.cadastro input{
+    color: white;
+    background-color: #0B427A;
+    padding-left: 10px;
+    border: none;
+    outline: none;
+    border-radius: 8px;
+    margin-top: 20px;
+    width: 350px;
+    height: 40px;
+}
+.cadastro img{
+    width: 80px;
+    margin-bottom: 15px;
+    height: auto;
+}

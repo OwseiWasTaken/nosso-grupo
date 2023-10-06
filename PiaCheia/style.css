@@ -8,7 +8,7 @@ body{
     justify-content: space-around;
     text-align: center;
     width: 100%;
-    height: 58em;
+    height: 100%;
     background-color: white;
 }
 #logo{
@@ -17,7 +17,7 @@ body{
 }
 #logo img{
     width: 100%;
-    height: 58em;
+    height: 110%;
 }
 button{
     width: 20em;

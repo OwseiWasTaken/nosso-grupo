@@ -23,6 +23,25 @@ CREATE TABLE IF NOT EXISTS accounts (
 	isAdmin BOOLEAN NOT NULL DEFAULT false,
 	UNIQUE (accountName)
 );`
+const INSERT_ACCOUNT = `
+INSERT INTO accounts
+	(accountName, passhash, idAdmin)
+ VALUES
+ 	(?, ?, 0);
+`
+
+func newAccount(name, password string) *Account {
+	r := Unpack(db.EXEC(INSERT_ACCOUNT), name, Hash(password)
+	return nil
+}
+
+const INSERT_ADMIN_ACCOUNT = `
+INSERT INTO accounts
+	(accountName, passhash, idAdmin)
+ VALUES
+ 	(?, ?, 1);
+`
+
 
 const INSERT_ARTICLE = `
 INSERT INTO articles
@@ -35,6 +54,13 @@ func (a *Account) NewArticle(filepath string) (int64, error) {
 	return r.LastInsertId()
 }
 
+const ADD_ACCOUNT = `
+INSERT INTO accounts
+	(accountName, passhash)
+VALUES
+	(?, ?);
+`
+
 type Article struct {
 	ArticleId int
 	Path string
@@ -42,6 +68,19 @@ type Article struct {
 	LastEdit time.Time
 	Comments []int // not in sql
 }
+const SchemaArticle = `
+CREATE TABLE IF NOT EXISTS articles (
+	articleId INTEGER NOT NULL PRIMARY KEY,
+	path TEXT NOT NULL,
+	lastEditor INTERGER NOT NULL,
+	lastEdit DATE NOT NULL,
+	UNIQUE (path),
+	FOREIGN KEY(lastEditor) REFERENCES accounts(accountId)
+);`
+
+// figure out how to check if lastEditor is valid account
+// CHECK ( SELECT MAX(rowid) FROM accounts ) >= lastEditor
+
 func (art Article) GetComments() (comments []*Comment) {
 	comments = make([]*Comment, len(art.Comments))
 	for i, cmntId := range art.Comments {
@@ -61,17 +100,22 @@ func (art *Article) AddComent(posterId int, text string) {
 		art.ArticleId, posterId, text,
 	))
 }
-const SchemaArticle = `
-CREATE TABLE IF NOT EXISTS articles (
-	articleId INTEGER NOT NULL PRIMARY KEY,
-	path TEXT NOT NULL,
-	lastEditor INTERGER NOT NULL,
-	lastEdit DATE NOT NULL,
-	UNIQUE (path),
-	FOREIGN KEY(lastEditor) REFERENCES accounts(accountId)
-);`
-// figure out how to check if lastEditor is valid account
-// CHECK ( SELECT MAX(rowid) FROM accounts ) >= lastEditor
+
+
+const UPDATE_ARTICLE_PATH = `
+UPDATE articles SET
+	path=?
+WHERE
+	( articleId IS ? );
+`
+func (art *Article) UpdatePath(newPath string) error {
+	/*
+	 if (Exists(newPath)) {
+		return fmt.Errorf("%s is already used", newPath)
+  	}
+ 	*/
+	Unpack(db.Exec(UPDATE_ARTICLE_PATH), newPath, art.ArticleId)
+}
 
 type Comment struct {
 	CommentId int
@@ -81,6 +125,22 @@ type Comment struct {
 	Text string
 	Children []int // not in sql
 }
+const SchemaComment = `
+CREATE TABLE IF NOT EXISTS comments (
+	commentId INTEGER NOT NULL PRIMARY KEY,
+	parentCommentId INTEGER NOT NULL DEFAULT 0,
+	articleId INTEGER NOT NULL,
+	posterId INTEGER NOT NULL,
+	text TEXT NOT NULL,
+	FOREIGN KEY(posterId) REFERENCES accounts(accountId),
+	FOREIGN KEY(articleId) REFERENCES articles(articleId),
+	FOREIGN KEY(parentCommentId) REFERENCES comments(commentId),
+	CHECK ( parentCommentId IS NULL OR parentCommentId < commentId )
+);`
+// figure out how to check if posterId is valid account
+// CHECK ( MAX(rowid) FROM accounts ) >= posterId
+// figure out how to check if parentComment's articleId = articleId
+
 
 func (cmt Comment) GetParent() *Comment {
 	if cmt.ParentCommentId == 0 {return nil}
@@ -105,39 +165,7 @@ func (cmt *Comment) AddComent(posterId int, text string) {
 		posterId, text,
 	))
 }
-const SchemaComment = `
-CREATE TABLE IF NOT EXISTS comments (
-	commentId INTEGER NOT NULL PRIMARY KEY,
-	parentCommentId INTEGER NOT NULL DEFAULT 0,
-	articleId INTEGER NOT NULL,
-	posterId INTEGER NOT NULL,
-	text TEXT NOT NULL,
-	FOREIGN KEY(posterId) REFERENCES accounts(accountId),
-	FOREIGN KEY(articleId) REFERENCES articles(articleId),
-	FOREIGN KEY(parentCommentId) REFERENCES comments(commentId),
-	CHECK ( parentCommentId IS NULL OR parentCommentId < commentId )
-);`
-// figure out how to check if posterId is valid account
-// CHECK ( MAX(rowid) FROM accounts ) >= posterId
-// figure out how to check if parentComment's articleId = articleId
 
-
-
-
-
-const UPDATE_ARTICLE_PATH = `
-UPDATE articles SET
-	path=?
-WHERE
-	( articleId IS ? );
-`
-
-const ADD_ACCOUNT = `
-INSERT INTO accounts
-	(accountName, passhash)
-VALUES
-	(?, ?);
-`
 
 const GET_ACCOUNTS = `
 SELECT * FROM accounts;
